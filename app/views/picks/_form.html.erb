@@ -31,6 +31,14 @@
     <%= check_box_tag "pick_#{game.id}_0" %>
     <%= game.away %>
     <%= game.spread %><br />
+    
+    <%= check_box_tag "pick_#{game.id}_1" %>
+    <%= game.home %>
+    <%= game.spread.to_f * -1 > 0 ? '+' : '' %>
+    <%= game.spread.to_f * -1 %><br />
+
+    <%= f.hidden_field :team %>
+    <%= f.hidden_field :spread %>
   <% end %>
   </div>
 

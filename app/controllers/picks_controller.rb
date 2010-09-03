@@ -86,7 +86,7 @@ class PicksController < ApplicationController
   private
   def games_with_spreads
     lines = Pick.get_lines
-    games = Game.find_all_by_week('p')
+    games = Game.all
     games.each do |game|
       lines.each do |line|
         if game.away == line['game']['away'] && game.home == line['game']['home']

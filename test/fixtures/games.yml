@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  week: MyString
+  date: 2010-09-03 15:14:13
+  home: MyString
+  away: MyString
+  home_score: 1
+  away_score: 1
+
+two:
+  week: MyString
+  date: 2010-09-03 15:14:13
+  home: MyString
+  away: MyString
+  home_score: 1
+  away_score: 1

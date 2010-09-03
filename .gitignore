@@ -1,4 +1,15 @@
-.bundle
-db/*.sqlite3
 log/*.log
+log/*.log*
 tmp/**/*
+.DS_Store
+doc/api
+doc/app
+/config/initializers/site_keys.rb
+nbproject/**/*
+config/database.yml
+public/uploads
+public/widgets
+*.back
+*.swp
+public/system
+public/widget_banners/*

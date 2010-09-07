@@ -1,0 +1,47 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'pick_controls' %>
+<% end %>
+<%= form_for(@pick_set) do |f| %>
+  <% if @pick_set.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@pick_set.errors.count, "error") %> prohibited this pick_set from being saved:</h2>
+
+      <ul>
+      <% @pick_set.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <ul id="game_list" style="list-style: none">
+    <% @games.each do |game| %>
+      <li id="<%= game.id %>" class="game">
+      <% if game.spread %>
+        <% f.fields_for :picks do |p| %>
+          <%= check_box_tag("pick_#{game.id}_0", '1', false, :class => 'pick') %>
+          <span class="team"><%= game.away %></span>
+          <span class="spread"><%= game.spread %></span><br />
+          
+          <%= check_box_tag("pick_#{game.id}_1", '1', false, :class => 'pick') %>
+          <span class="team"><%= game.home %></span>
+          <span class="spread">
+            <%= game.spread.to_f * -1 > 0 ? '+' : '' %><%= game.spread.to_f * -1 %>
+          </span><br />
+          <%= p.hidden_field :team, :class => 'set_team' %>
+          <%= p.hidden_field :spread, :class => 'set_spread' %>
+          <%= p.hidden_field :game_id, :value => game.id %>
+        <% end %>
+      <% else %>
+        <%= game.away %><br />
+        <%= game.home %>
+        OFF<br />
+      <% end %>
+    <% end %>
+    </li>
+  </ul>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

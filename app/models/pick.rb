@@ -4,6 +4,8 @@ require 'hpricot'
 
 class Pick < ActiveRecord::Base
   belongs_to :user
+  belongs_to :game
+  belongs_to :pick_set
 
   def self.get_lines 
     @url = "http://espn.go.com/nfl/lines"

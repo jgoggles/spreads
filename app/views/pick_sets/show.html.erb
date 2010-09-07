@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @pick_set.user_id %>
+</p>
+
+<p>
+  <b>Week:</b>
+  <%= @pick_set.week %>
+</p>
+
+
+<%= link_to 'Edit', edit_pick_set_path(@pick_set) %> |
+<%= link_to 'Back', pick_sets_path %>

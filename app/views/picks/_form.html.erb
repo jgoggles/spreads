@@ -12,33 +12,23 @@
   <% end %>
 
   <div>
-  <% comment do %>
-    <% @lines.each do |line| %>
-      <%= check_box_tag "pick_#{@lines.index(line) + 1}_0" %>
-      <%= line['game']['away'] %>
-      <%= line['line'].to_i * -1 > 0 ? '+' : '' %>
-      <%= line['line'].to_i * -1 %><br />
+  <% @games.each do |game| %>
+    <% if game.spread %>
+      <%= check_box_tag "pick_#{game.id}_0" %>
+      <%= game.away %>
+      <%= game.spread %><br />
       
-      <%= check_box_tag "pick_#{@lines.index(line) + 1}_1" %>
-      <%= line['game']['home'] %>
-      <%= line['line'] %><br />
-
+      <%= check_box_tag "pick_#{game.id}_1" %>
+      <%= game.home %>
+      <%= game.spread.to_f * -1 > 0 ? '+' : '' %>
+      <%= game.spread.to_f * -1 %><br />
       <%= f.hidden_field :team %>
       <%= f.hidden_field :spread %>
+    <% else %>
+      <%= game.away %><br />
+      <%= game.home %>
+      OFF<br />
     <% end %>
-  <% end %>
-  <% @games.each do |game| %>
-    <%= check_box_tag "pick_#{game.id}_0" %>
-    <%= game.away %>
-    <%= game.spread %><br />
-    
-    <%= check_box_tag "pick_#{game.id}_1" %>
-    <%= game.home %>
-    <%= game.spread.to_f * -1 > 0 ? '+' : '' %>
-    <%= game.spread.to_f * -1 %><br />
-
-    <%= f.hidden_field :team %>
-    <%= f.hidden_field :spread %>
   <% end %>
   </div>
 

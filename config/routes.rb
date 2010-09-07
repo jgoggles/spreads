@@ -1,4 +1,6 @@
 Spreads::Application.routes.draw do
+  resources :pick_sets
+
   devise_for :users
 
   resources :picks

@@ -5,7 +5,7 @@ class Game < ActiveRecord::Base
 
   def self.with_spreads(user=nil)
     lines = get_lines
-    week = Week.current[0]
+    week = Week.current.first
     games = week.games 
     games.each do |game|
       lines.each do |line|

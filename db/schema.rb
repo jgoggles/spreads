@@ -10,10 +10,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100904070615) do
+ActiveRecord::Schema.define(:version => 20100908163718) do
 
   create_table "games", :force => true do |t|
-    t.string   "week"
     t.datetime "date"
     t.string   "home"
     t.string   "away"
@@ -21,13 +20,14 @@ ActiveRecord::Schema.define(:version => 20100904070615) do
     t.integer  "away_score"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "week_id"
   end
 
   create_table "pick_sets", :force => true do |t|
     t.integer  "user_id"
-    t.string   "week"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "week_id"
   end
 
   create_table "picks", :force => true do |t|
@@ -59,5 +59,13 @@ ActiveRecord::Schema.define(:version => 20100904070615) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "weeks", :force => true do |t|
+    t.string   "name"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

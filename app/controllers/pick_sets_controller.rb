@@ -1,8 +1,12 @@
 class PickSetsController < ApplicationController
+  before_filter :authenticate_user!
+
   # GET /pick_sets
   # GET /pick_sets.xml
   def index
-    @pick_sets = PickSet.all
+    @current_pick_set = Week.current.first.pick_sets.where("user_id = #{current_user.id}").first
+    @league_pick_sets = User.where("id != #{current_user.id}") 
+    @week = Week.current.first
 
     respond_to do |format|
       format.html # index.html.erb
@@ -24,19 +28,23 @@ class PickSetsController < ApplicationController
   # GET /pick_sets/new
   # GET /pick_sets/new.xml
   def new
-    @pick_set = PickSet.new
-    @games = games_with_spreads 
-    @pick_set.picks.build
+    if current_user.has_picks_for_this_week
+      redirect_to pick_sets_url, :alert => 'You can\'t create picks for this week anymore. View or add picks below.'
+    else
+      @pick_set = PickSet.new
+      @games = Game.with_spreads
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @pick_set }
+      respond_to do |format|
+        format.html # new.html.erb
+        format.xml  { render :xml => @pick_set }
+      end
     end
   end
 
   # GET /pick_sets/1/edit
   def edit
     @pick_set = PickSet.find(params[:id])
+    @games = Game.with_spreads(current_user)
   end
 
   # POST /pick_sets
@@ -44,6 +52,8 @@ class PickSetsController < ApplicationController
   def create
     @pick_set = PickSet.new(params[:pick_set])
     @pick_set.user_id = current_user.id
+    @pick_set.week_id = Week.current.first.id
+    @games = Game.with_spreads
 
     respond_to do |format|
       if @pick_set.save
@@ -60,6 +70,7 @@ class PickSetsController < ApplicationController
   # PUT /pick_sets/1.xml
   def update
     @pick_set = PickSet.find(params[:id])
+    @games = Game.with_spreads(current_user)
 
     respond_to do |format|
       if @pick_set.update_attributes(params[:pick_set])
@@ -84,17 +95,4 @@ class PickSetsController < ApplicationController
     end
   end
   
-  private
-  def games_with_spreads
-    lines = Pick.get_lines
-    games = Game.find_all_by_week('p')
-    games.each do |game|
-      lines.each do |line|
-        if game.away == line['game']['away'] && game.home == line['game']['home']
-          game.update_attributes(:spread => line['line'])
-        end
-      end
-    end
-    return games
-  end
 end

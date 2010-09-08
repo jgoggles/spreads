@@ -1,25 +1,68 @@
-<h1>Listing pick_sets</h1>
+<h1><%= "Week #{@week.name} Picks" %></h1>
 
-<table>
-  <tr>
-    <th>User</th>
-    <th>Week</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @pick_sets.each do |pick_set| %>
-  <tr>
-    <td><%= pick_set.user_id %></td>
-    <td><%= pick_set.week %></td>
-    <td><%= link_to 'Show', pick_set %></td>
-    <td><%= link_to 'Edit', edit_pick_set_path(pick_set) %></td>
-    <td><%= link_to 'Destroy', pick_set, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+<h2>Your Picks</h2>
+<% if @current_pick_set %>
+  <ul>
+    <% @current_pick_set.picks.each do |pick| %>
+      <li>
+        <%= pick.team %>
+        <%= pick.spread %>
+      </li>  
+    <% end %>
+    <% if @current_pick_set.picks.size < 3 %>
+      <li>
+      <% @picks_left = 3 - @current_pick_set.picks.size;
+         @pick_or_picks = @picks_left > 1 ? 'picks' : 'pick' %>
+         <%= "You need to make #{@picks_left} more #{@pick_or_picks} for this week." %> <br />
+        <%= link_to 'Add picks', edit_pick_set_path(@current_pick_set) %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>You haven't made any picks for this week.<br />
+  <%= link_to "Make picks for week #{@week.name}", new_pick_set_path %></p>
 <% end %>
-</table>
 
-<br />
+<h2>League Picks</h2>
+<ul>
+  <% @league_pick_sets.each do |set| %>
+    <li>
+      <%= set.email %>
+      <ul>
+        <% if !set.pick_sets.empty? %>
+          <% set.pick_sets.where("week_id = #{@week.id}")[0].picks.each do |p| %>
+            <li>
+              <%= p.team %>
+              <%= p.spread %>
+            </li>  
+          <% end %>
+        <% else %>
+          <li>No picks.</li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+</ul>
 
-<%= link_to 'New Pick set', new_pick_set_path %>
+
+<% comment do %>
+  <table>
+    <tr>
+      <th>User</th>
+      <th>Week</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+
+  <% @pick_sets.each do |pick_set| %>
+    <tr>
+      <td><%= pick_set.user_id %></td>
+      <td><%= pick_set.week %></td>
+      <td><%= link_to 'Show', pick_set %></td>
+      <td><%= link_to 'Edit', edit_pick_set_path(pick_set) %></td>
+      <td><%= link_to 'Destroy', pick_set, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>

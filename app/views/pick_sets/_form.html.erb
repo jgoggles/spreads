@@ -17,17 +17,17 @@
   <ul id="game_list" style="list-style: none">
     <% @games.each do |game| %>
       <li id="<%= game.id %>" class="game">
-      <% if game.spread %>
-        <% f.fields_for :picks do |p| %>
+      <% if game.spread && game.date > Time.now %>
+        <%= f.fields_for(:picks, Pick.new) do |p| %>
           <%= check_box_tag("pick_#{game.id}_0", '1', false, :class => 'pick') %>
           <span class="team"><%= game.away %></span>
-          <span class="spread"><%= game.spread %></span><br />
-          
-          <%= check_box_tag("pick_#{game.id}_1", '1', false, :class => 'pick') %>
-          <span class="team"><%= game.home %></span>
           <span class="spread">
             <%= game.spread.to_f * -1 > 0 ? '+' : '' %><%= game.spread.to_f * -1 %>
           </span><br />
+          
+          <%= check_box_tag("pick_#{game.id}_1", '1', false, :class => 'pick') %>
+          <span class="team"><%= game.home %></span>
+          <span class="spread"><%= game.spread %></span><br />
           <%= p.hidden_field :team, :class => 'set_team' %>
           <%= p.hidden_field :spread, :class => 'set_spread' %>
           <%= p.hidden_field :game_id, :value => game.id %>
@@ -42,6 +42,6 @@
   </ul>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit :onclick => 'return confirm("Are you sure you want to submit these picks? Once submitted they cannot be changed.")' %>
   </div>
 <% end %>

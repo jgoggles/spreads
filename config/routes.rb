@@ -5,7 +5,7 @@ Spreads::Application.routes.draw do
 
   resources :picks
 
-  root :to => "picks#index"
+  root :to => "pick_sets#index"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

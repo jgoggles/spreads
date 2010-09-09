@@ -3,9 +3,11 @@ class PickSet < ActiveRecord::Base
   belongs_to :user
   belongs_to :week
 
-  accepts_nested_attributes_for :picks, :reject_if => lambda { |a| a[:team].blank? || a[:spread].blank? }
+  accepts_nested_attributes_for :picks, :reject_if => lambda { |a| a[:is_home].blank? || a[:spread].blank? }
 
-  def validate
+  validate :number_of_picks
+
+  def number_of_picks
     errors.add_to_base "You cannot have more than 3 picks in a week" if self.picks.size > 3
   end
 end

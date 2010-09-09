@@ -69,4 +69,44 @@ class Game < ActiveRecord::Base
       print e, "\n"
     end
   end
+
+  def self.get_scores(week)
+    @url = "http://www.nfl.com/scores/2010/REG#{week.name}"
+    @response = ''
+
+    begin
+      open(@url) { |f|
+        @response = f.read
+      }
+
+      @response.gsub!(/sb-wrapper-\d*/, "sb-wrapper")
+
+      doc = Hpricot(@response)
+      scores = []
+      containers = (doc/"/html/body/div[4]/div/div/div/div[2]/div/div[5]/div#sb-wrapper") 
+
+      containers.each do |container|
+        scores.push(Hash.new)
+        scores[containers.index(container)]['game'] = {}
+        g = scores[containers.index(container)]['game']
+        g['away_team']  = container.at("div/div/div/div[3]/ul.away-team/li[2]/div/a").inner_html
+        g['home_team']  = container.at("div/div/div/div[3]/ul.home-team/li[2]/div/a").inner_html
+        g['away_score'] = container.at("div/div/div/div.game-info-section/div.away-score/div.the-score").inner_html
+        g['home_score'] = container.at("div/div/div/div.game-info-section/div.home-score/div.the-score").inner_html
+      end
+
+      games = week.games 
+      games.each do |game|
+        scores.each do |score|
+          if game.away =~ /#{score['game']['away_team']}/ && game.home =~ /#{score['game']['home_team']}/
+            game.update_attributes(:away_score => score['game']['away_score'], :home_score => score['game']['home_score'])
+          end
+        end
+      end
+
+    rescue Exception => e
+      print e, "\n"
+    end
+
+  end
 end

@@ -33,6 +33,7 @@ class PickSetsController < ApplicationController
     else
       @pick_set = PickSet.new
       @games = Game.with_spreads
+      @week = Week.current.first
 
       respond_to do |format|
         format.html # new.html.erb
@@ -45,6 +46,7 @@ class PickSetsController < ApplicationController
   def edit
     @pick_set = PickSet.find(params[:id])
     @games = Game.with_spreads(current_user)
+    @week = Week.current.first
   end
 
   # POST /pick_sets

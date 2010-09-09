@@ -56,6 +56,7 @@ class PickSetsController < ApplicationController
     @pick_set.user_id = current_user.id
     @pick_set.week_id = Week.current.first.id
     @games = Game.with_spreads
+    @week = Week.current.first
 
     respond_to do |format|
       if @pick_set.save
@@ -73,6 +74,7 @@ class PickSetsController < ApplicationController
   def update
     @pick_set = PickSet.find(params[:id])
     @games = Game.with_spreads(current_user)
+    @week = Week.current.first
 
     respond_to do |format|
       if @pick_set.update_attributes(params[:pick_set])

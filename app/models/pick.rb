@@ -12,16 +12,18 @@ class Pick < ActiveRecord::Base
     end
   end
 
-  def generate_result
+  def generate_standing
     game = Game.find(self.game_id)
-    if self.is_home?
-      get_result((game.home_score + spread), game.away_score)
-    else
-      get_result((game.away_score + spread), game.home_score)
+    if game.has_scores
+      if self.is_home?
+        generate_result((game.home_score + spread), game.away_score)
+      else
+        generate_result((game.away_score + spread), game.home_score)
+      end
     end
   end
 
-  def get_result(pick_score, non_pick_score)
+  def generate_result(pick_score, non_pick_score)
     if pick_score > non_pick_score
       result = 1
     elsif pick_score < non_pick_score

@@ -29,8 +29,9 @@
     <li>
       <%= set.email %>
       <ul>
-        <% if !set.pick_sets.empty? %>
-          <% set.pick_sets.where("week_id = #{@week.id}")[0].picks.each do |p| %>
+        <% week_pick_set = set.pick_sets.where("week_id = #{@week.id}") %>
+        <% if !week_pick_set.empty? %>
+          <% week_pick_set[0].picks.each do |p| %>
             <li>
               <%= p.team %>
               <%= p.spread %>

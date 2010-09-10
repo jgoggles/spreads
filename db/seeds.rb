@@ -1,29 +1,17 @@
 require 'fastercsv'
-def truncate_db_table(table)
-  config = ActiveRecord::Base.configurations[Rails.env]
-  ActiveRecord::Base.establish_connection
-  case config["adapter"]
-  when "mysql"
-    ActiveRecord::Base.connection.execute("TRUNCATE #{table}")
-  when "sqlite", "sqlite3"
-    ActiveRecord::Base.connection.execute("DELETE FROM #{table}")
-    ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence where name='#{table}'")
-    ActiveRecord::Base.connection.execute("VACUUM")
-  end
-end
 
 ############
 # all envs #
 ############
 
 ## Games
-truncate_db_table('games')
+Game.connection.execute("TRUNCATE games")
 FasterCSV.foreach("public/2010-nfl-schedule.csv") do |row|
   Game.create!(:week_id => row[0].to_i, :date => "#{row[1]} #{row[2]}".to_time + 4.hours, :away => row[3], :home => row[4] )
 end
 
 ## Weeks
-truncate_db_table('weeks')
+Week.connection.execute("TRUNCATE weeks")
 t = "Sept 6, 2010".to_date
 w = 0
 17.times do 
@@ -36,12 +24,38 @@ end
 
 if Rails.env == "development"
   ## Games
-  games = Game.where('week_id = 999')
+  games = Game.where('week_id = 18')
   games.each {|g| g.update_attributes(:home_score => rand(42), :away_score => rand(42))}
 
+  ## Weeks
+  Week.create!(:name => 'Test', :start_date => Time.now - 5.years, :end_date => Time.now - 5.years + 1.week)
+
   ## Users
-  User.create!(:email => "test_guy1@test.com", :password => "password", :password_confirmation => "password")
-  User.create!(:email => "test_guy2@test.com", :password => "password", :password_confirmation => "password")
+  User.connection.execute("TRUNCATE users")
+  i = 0
+  4.times do 
+    User.create!(:email => "test_guy#{i += 1}@test.com", :password => "password", :password_confirmation => "password")
+  end
+
+  ## PickSets
+  PickSet.connection.execute("TRUNCATE pick_sets")
+  users = User.all
+  users.each do |u|
+    PickSet.create!(:user_id => u.id, :week_id => Week.all.size)
+  end
+
+  # Picks
+  Pick.connection.execute("TRUNCATE picks")
+  users = User.all
+  i = -7.0; set = []; 28.times {set.push(i += 0.5)};
+  pick_set_id = 0
+  users.each do |u|
+    game_id = 0
+    pick_set_id += 1
+    3.times do
+      Pick.create!(:spread => set[rand(set.size - 1)], :game_id => game_id +=1, :pick_set_id => pick_set_id, :is_home => rand(2))
+    end
+  end
 end
 
 

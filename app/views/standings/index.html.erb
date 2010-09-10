@@ -1,0 +1,21 @@
+<ul>
+  <% @weeks.each do |week| %>
+    <li>
+      <%= week.name %>
+      <ul>
+        <% week_pick_set = current_user.pick_sets.where("week_id = #{week.id}") %>
+        <% if !week_pick_set.empty? %>
+          <% week_pick_set[0].picks.each do |p| %>
+            <li>
+              <%= p.team %>
+              <%= p.spread %>
+              <%= p.generate_result %>
+            </li>  
+          <% end %>
+        <% else %>
+          <li>No picks.</li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+</ul>

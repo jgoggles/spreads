@@ -23,11 +23,12 @@ class Pick < ActiveRecord::Base
 
   def get_result(pick_score, non_pick_score)
     if pick_score > non_pick_score
-      result = 3
-    elsif pick_score < non_pick_score
-      result = 0
-    elsif pick_score == non_pick_score
       result = 1
+    elsif pick_score < non_pick_score
+      result = -1
+    elsif pick_score == non_pick_score
+      result = 0
     end
+    self.update_attributes(:result => result)
   end
 end

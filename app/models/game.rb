@@ -72,6 +72,7 @@ class Game < ActiveRecord::Base
 
   def self.get_scores(week)
     @url = "http://www.nfl.com/scores/2010/REG#{week.name}"
+#    @url = "http://www.nfl.com/scores/2010/PRE4"
     @response = ''
 
     begin
@@ -92,8 +93,10 @@ class Game < ActiveRecord::Base
         g['away_team']  = container.at("div/div/div/div[3]/ul.away-team/li[2]/div/a").inner_html
         g['home_team']  = container.at("div/div/div/div[3]/ul.home-team/li[2]/div/a").inner_html
         g['away_score'] = container.at("div/div/div/div.game-info-section/div.away-score/div.the-score").inner_html
+        puts g['away_score']
         g['home_score'] = container.at("div/div/div/div.game-info-section/div.home-score/div.the-score").inner_html
       end
+      puts scores
 
       games = week.games 
       games.each do |game|

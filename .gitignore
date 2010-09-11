@@ -4,6 +4,7 @@ tmp/**/*
 .DS_Store
 doc/api
 doc/app
+config/deploy.rb
 /config/initializers/site_keys.rb
 nbproject/**/*
 config/database.yml

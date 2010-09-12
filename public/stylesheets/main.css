@@ -1,0 +1,133 @@
+@import url('reset.css');
+
+body{background:#fff url(/images/background-v2.png) 0 0 repeat-x; color: #444; font-size: 18px; font-weight: 200;}
+
+h1 {color: #444; font-size: 30px; font-weight: 200; margin-bottom: 10px;}
+h2 {font-size: 22px; font-weight: 200; }
+
+a:link, a:visited {color:#4183C4;}
+a:hover {color:#ccc; text-decoration: underline;}
+a:hover {-webkit-transition:color 0.25s linear;}
+p {margin-bottom: 10px;}
+
+.shade {background: #F1F1F1;}
+.highlight {background: #D3FFDC;}
+.instructions {color: #999;}
+#container {
+	margin: 0 auto; width: 958px;
+}
+
+#header{margin:0 auto 15px auto;width:958px;height:91px;min-width:950px;}
+#logo {margin: 8px 0 0 0;}
+#userNav {color: #999;float:right;font-size: 12px;margin: 12px 0 0 0;}
+#userNav li {float: left; margin-left: 6px;}
+
+#content {margin:0 auto;width:920px;padding:0 15px;}
+
+#innerWrapper{position:relative;margin:-35px 0 -10px -25px;width:920px;padding:20px 25px 10px 25px;background:url(/images/background-white.png) 0 0 no-repeat;}
+
+.pickAlert{list-style: none; color: #c00; margin: 0 0 10px 0;}
+#weeksPicks {background: url('/images/leo_gaje.gif') 650px 0px no-repeat; height: 400px;}
+#weeksPicks li {width: 580px;}
+#weeksPicks li.pick {border-top: 1px solid #E2E2E2; font-size: 18px; font-weight: 200; margin: 2px 0; padding: 5px 3px;}
+
+#gameList {background: url('/images/chewy.jpg') top right no-repeat;}
+#gameList li {padding: 6px; width: 580px;}
+#gameList li .teamLine {padding: 3px;}
+#gameList li .gameOff {color: #c00; float: right;}
+
+/* Error Reporting Styles */
+
+.fieldWithErrors {
+	margin: 2px;
+	padding: 2px;
+	background-color: #c00;
+	display: table;
+}
+
+#error_explanation {
+	border: 2px solid #c00;
+	padding: 7px;
+	padding-bottom: 12px;
+	margin-bottom: 20px;
+	background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+	text-align: left;
+	font-weight: bold;
+	padding: 5px 5px 5px 5px;
+	font-size: 12pt;
+	margin: -7px;
+	background-color: #c00;
+	color: #fff;		
+}
+
+#errorExplanation p {
+	color: #333;
+	margin-bottom: 0;
+	padding: 5px;
+}
+
+#error_explanation ul li {
+	list-style: disc;
+	margin-left: 20px;
+}
+
+/*Flash Notice Style*/
+
+#flash_notice {
+	border: 1px solid green;
+	margin-bottom: 20px;
+	font-size: 12px;
+	padding: 6px;
+	color: green;
+	background-color: #78D383;
+	text-align: center;
+}
+	
+#flash_error, #flash_alert {
+	border: 1px solid #c99;
+	background: #DE0202;
+	color: #fff;
+	margin-bottom: 20px;
+	font-size: 12px;
+	padding: 6px;
+	text-align: center;
+}
+
+#loginContainer {overflow: auto; margin: 25px auto 0 auto; width: 500px;}
+#loginContainer label {color: #999; display: block;}
+#loginContainer input[type="text"], #loginContainer input[type="password"] {
+	border: 1px solid #999; 
+	color: #ccc;
+	font-size: 22px; 
+	margin: 0 auto 18px auto; 
+	padding: 8px; 
+	text-align: center; 
+	width: 480px;
+}
+#loginContainer input[type="text"]:hover, #loginContainer input[type="password"]:hover {
+	background: #F5F5F5;
+}
+#loginContainer input[type="text"]:focus, #loginContainer input[type="password"]:focus {
+	background: #eee;
+	color:#000;
+	outline: #0798F2 1px solid;
+}
+#loginContainer input[type="submit"] {
+	background: #eee; 
+	border: 1px solid #999;
+	color: #444;
+	float:right;
+	height: 30px;
+	width: 80px;
+}
+#loginContainer input[type="submit"]:hover {
+	background: #ccc; 
+	cursor: pointer;
+}
+
+#loginContainer a.forgotPassword {color: #666; font-size: 12px;}
+#loginContainer a:hover.forgotPassword {color: #999;}
+

@@ -5,7 +5,7 @@ class PickSetsController < ApplicationController
   # GET /pick_sets.xml
   def index
     @current_pick_set = Week.current.first.pick_sets.where("user_id = #{current_user.id}").first
-    @league_pick_sets = User.where("id != #{current_user.id}") 
+    # @league_pick_sets = User.where("id != #{current_user.id}") 
     @week = Week.current.first
 
     respond_to do |format|
@@ -60,7 +60,7 @@ class PickSetsController < ApplicationController
 
     respond_to do |format|
       if @pick_set.save
-        format.html { redirect_to(@pick_set, :notice => 'Pick set was successfully created.') }
+        format.html { redirect_to(pick_sets_url, :notice => 'Pick set was successfully created.') }
         format.xml  { render :xml => @pick_set, :status => :created, :location => @pick_set }
       else
         format.html { render :action => "new" }
@@ -78,7 +78,7 @@ class PickSetsController < ApplicationController
 
     respond_to do |format|
       if @pick_set.update_attributes(params[:pick_set])
-        format.html { redirect_to(@pick_set, :notice => 'Pick set was successfully updated.') }
+        format.html { redirect_to(pick_sets_url, :notice => 'Pick set was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

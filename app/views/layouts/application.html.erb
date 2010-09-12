@@ -1,27 +1,42 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
   <title>Spreads</title>
-  <%= stylesheet_link_tag :all %>
+  <%= stylesheet_link_tag 'main' %>
   <%= javascript_include_tag :defaults %>
   <%= yield :head %>
   <%= csrf_meta_tag %>
 </head>
 <body>
-  <div id="user_nav">
-    <% if user_signed_in? %>
-      Signed in as <%= current_user.email %>. Not you?
-      <%= link_to "Sign out", destroy_user_session_path %>
-    <% else %>
-      <%= link_to "Sign in", new_user_session_path %>
-    <% end %>
-  </div>
+	<div id="container">
+		<div id="header">
+			<img id="logo" src="/images/logo.png" />
 
-  <% flash.each do |name, msg| %>
-    <%= content_tag :div, msg, :id => "flash_#{name}" %>
-  <% end %>
+		  <ul id="userNav">
+		    <% if user_signed_in? %>
+		      <li><%= current_user.email %></li>
+					<li>|</li>
+					<li><%= link_to "Make picks", '/pick_sets' %> </li>
+					<li>|</li>
+					<li><%= link_to "Standings", '/standings' %> </li>
+					<li>|</li>
+		      <li><%= link_to "Sign out", destroy_user_session_path %></li>
+		    <% else %>
+		      <li><%= link_to "Sign in", new_user_session_path %></li>
+		    <% end %>
+		  </ul>
 
-<%= yield %>
-
+		</div>
+		
+		<div id="content">
+			<div id="innerWrapper">
+				<% flash.each do |name, msg| %>
+			    <%= content_tag :div, msg, :id => "flash_#{name}" %>
+			  <% end %>
+				<%= yield %>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

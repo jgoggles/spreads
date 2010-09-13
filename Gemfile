@@ -9,6 +9,7 @@ gem 'mysql2'
 gem 'devise'
 gem 'hpricot'
 gem 'fastercsv'
+gem 'postageapp'
 
 # Use unicorn as the web server
 # gem 'unicorn'

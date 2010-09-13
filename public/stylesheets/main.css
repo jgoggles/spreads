@@ -36,6 +36,20 @@ p {margin-bottom: 10px;}
 #gameList li .teamLine {padding: 3px;}
 #gameList li .gameOff {color: #c00; float: right;}
 
+#seasonStandingsContainer {border-bottom: 1px solid #E2E2E2; margin-bottom: 12px; padding-bottom: 12px;}
+.standing, .standingRow .week {overflow: auto; padding: 3px;}
+.standingRow {clear:left;}
+.standingRow li, .standingsHeader li {float: left; margin: 4px;}
+.standing .player {width: 33%;}
+.standing .record {width: 25%; text-align: center;}
+.standing .points {width: 10%; text-align: right;}
+.standing .pick, .standing .result {font-size: 12px; font-weight: 400;margin: 0px; padding: 0px; width: 25%;}
+.standingRow .week {background: #F1F1F1; width: 100%;}
+.standing .pick {margin-left: 275px;}
+.standing .result {text-align: center;}
+
+
+
 /* Error Reporting Styles */
 
 .fieldWithErrors {

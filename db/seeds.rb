@@ -12,10 +12,11 @@ end
 
 ## Weeks
 Week.connection.execute("TRUNCATE weeks")
-t = "Sept 6, 2010".to_date
+t = "Sept 7, 2010".to_date
 w = 0
 17.times do 
-  Week.create!(:name => w += 1, :start_date => t + 1.day, :end_date => t += 1.week)
+  Week.create!(:name => w += 1, :start_date => t, :end_date => t + 1.week - 1.second)
+  t += 1.week
 end
 
 ###############
@@ -57,5 +58,3 @@ if Rails.env == "development"
     end
   end
 end
-
-

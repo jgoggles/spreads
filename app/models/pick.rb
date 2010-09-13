@@ -12,7 +12,7 @@ class Pick < ActiveRecord::Base
     end
   end
 
-  def generate_standing
+  def calculate_result 
     game = Game.find(self.game_id)
     if game.has_scores
       if self.is_home?

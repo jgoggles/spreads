@@ -1,6 +1,7 @@
 class Week < ActiveRecord::Base
   has_many :pick_sets
   has_many :games
+  has_many :standings
 
   scope :current, lambda {where("start_date <= ?", Time.now).where(["end_date >= ?", Time.now]).limit(1)}
 

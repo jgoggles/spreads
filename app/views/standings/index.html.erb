@@ -1,21 +1,64 @@
-<ul>
-  <% @weeks.each do |week| %>
-    <li>
-      <%= week.name %>
-      <ul>
-        <% week_pick_set = current_user.pick_sets.where("week_id = #{week.id}") %>
-        <% if !week_pick_set.empty? %>
-          <% week_pick_set[0].picks.each do |p| %>
-            <li>
-              <%= p.team %>
-              <%= p.spread %>
-              <%= p.result %>
-            </li>  
-          <% end %>
-        <% else %>
-          <li>No picks.</li>
-        <% end %>
-      </ul>
-    </li>
-  <% end %>
+<h1>Season Standings</h1>
+<ul id="seasonStandingsHeager" class="standing standingsHeader">
+  <li class="player"><h2>Player</h2></li>
+  <li class="record"><h2>Record</h2></li>
+	<li class="record"><h2>Last Week</h2></li>
+  <li class="points"><h2>Points</h2></li>
 </ul>
+<div id="seasonStandingsContainer" class="standingsContainer">
+  <% @standings.each do |s| %>
+    <ul class="standing standingRow <%= cycle('shade', ' ') %>">
+      <li class="player"><%= s['player'] %></li>
+      <li class="record"><%= "#{s['wins']}-#{s['losses']}-#{s['pushes']}" %></li>
+			<li class="record"><%= s['last_week'] %></li>
+      <li class="points"><%= s['points'] %></li>
+    </ul>
+  <% end %>
+</div>
+
+<h1>Your Results</h1>
+<ul id="seasonStandingsHeager" class="standing standingsHeader">
+  <li class="pick"><h2>Pick</h2></li>
+	<li class="result"><h2>Result</h2></li>
+</ul>
+<div>
+  <% @weeks.each do |week| %>
+    <ul class="standingRow">
+			<% standing = Standing.where("week_id = #{week.id}").where("user_id = #{current_user.id}").first %>
+      <li class="week">
+				<%= "Week #{week.name}" %>
+				<% if standing %>
+					<span class="weekRecord">(<%= "#{standing.wins}-#{standing.losses}-#{standing.pushes}"%>)</span>
+				<% end %>
+			</li>
+		</ul>
+    <% week_pick_set = current_user.pick_sets.where("week_id = #{week.id}").first %>
+    <% if week_pick_set %>
+      <% week_pick_set.picks.each do |p| %>
+			<ul class="standing standingRow">
+        <li class="pick">
+					<%= p.team %>
+					<%= p.spread > 0 ? "+" : '' %><%= p.spread %>
+					(<% if p.is_home %>
+						vs <%= Game.find(p.game_id).away %>
+					<% else %>
+						at <%= Game.find(p.game_id).home %>
+					<% end%>
+					)
+				</li>
+				<% if p.result == 1 %>
+           <li class="result win">Win</li>
+				<% elsif p.result == -1 %>
+					<li class="result loss">Loss</li>
+				<% elsif p.result == 0 %>
+					<li class="result push">Push</li>
+				<% end %> 
+			</ul>
+      <% end %>
+    <% else %>
+    <ul class="standing standingRow"><li class="pick">No picks</li></ul>
+    <% end %>
+  <% end %>
+</div>
+<div class="clearBoth"></div>
+

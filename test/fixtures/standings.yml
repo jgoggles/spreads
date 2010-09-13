@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_id: 1
+  week_id: 1
+  wins: 1
+  losses: 1
+  pushes: 1
+  points: 1
+
+two:
+  user_id: 1
+  week_id: 1
+  wins: 1
+  losses: 1
+  pushes: 1
+  points: 1

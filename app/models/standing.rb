@@ -8,7 +8,7 @@ class Standing < ActiveRecord::Base
       losses = 0
       pushes = 0
       ps.picks.each do |p|
-        p.calculate_result
+        p.generate_result
         case p.result
         when 1
           wins += 1
@@ -33,7 +33,7 @@ class Standing < ActiveRecord::Base
     season_standings = []
     users.each do |u|
       record = {}  
-      record['player'] = u.email
+      record['player'] = u
       wins, losses, pushes, points = 0, 0, 0, 0
       u.standings.each do |s|
         wins += s.wins

@@ -19,24 +19,4 @@ class PickSet < ActiveRecord::Base
       end
     end
   end
-
-  def self.generate_record(pick_sets)
-    wins = 0
-    losses = 0 
-    pushes = 0 
-
-    pick_sets.each do |ps|
-      ps.picks.each do |p|
-        case p.result
-        when 1
-          wins += 1
-        when -1
-          losses += 1
-        when 0
-          pushes +=1
-        end
-      end
-    end
-    puts "#{wins}-#{losses}-#{pushes}"
-  end
 end

@@ -22,13 +22,5 @@ task :generate_standings => :environment do
   week_id = ENV['WEEK_ID'] || week.id
   
   pick_sets = PickSet.where("week_id = #{week_id}")
-  pick_sets.each do |ps|
-    ps.picks.each do |p|
-      game = Game.find(p.game_id)
-      if Time.now > game.date
-        p.generate_standing
-        puts "generated standing for #{game.away} at #{game.home}"
-      end
-    end
-  end
+  Standing.generate_standing(pick_sets)
 end

@@ -13,9 +13,8 @@ class Game < ActiveRecord::Base
     games = week.games 
     games.each do |game|
       lines.each do |line|
-        game_awa
-        if game.away =~ /#{line['game']['away']}/ && game.home =~ /#{line['game']['home']}/
-          game.update_attributes(:spread => line['line'])
+        if line['game']['away'] == game.away && line['game']['home'] == game.home
+          game.update_attributes(:spread => line['game']['line'])
         end
       end
     end
@@ -36,7 +35,7 @@ class Game < ActiveRecord::Base
   end
   
   def self.get_lines 
-    @url = "http://espn.go.com/nfl/lines"
+    @url = "http://sports.bodog.com/sports-betting/nfl-football.jsp"
     @response = ''
 
     begin
@@ -47,26 +46,44 @@ class Game < ActiveRecord::Base
       doc = Hpricot(@response)
       lines = []
       
-      rows = (doc/"/html/body/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tr.stathead/td")
+      # rows = (doc/"/html/body/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tr.stathead/td")
+      # 
+      # rows.each do |d|
+      #     lines.push(Hash.new)
+      #     lines[rows.index(d)]['game'] = {}
+      #     d.inner_html.match(/(.*)(\sat\s)(.*)(,.*)/)
+      #     lines[rows.index(d)]['game']['home'] = $3
+      #     lines[rows.index(d)]['game']['away'] = $1
+      #     lines[rows.index(d)]['game']['time'] = $4.gsub(", ", "")
+      # end
+      # 
+      # spreads = (doc/"/html/body/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tr.oddrow")
+      # 
+      # spreads.each do |d|
+      #   if d.at("td.sortcell").inner_html.gsub!(/.*>/, "") != "n/a" && d.at("td[2]").inner_html.gsub!(/<.*/, "") != "n/a"
+      #     lines[spreads.index(d)]['line'] = d.at("td[2]").inner_html.gsub!(/.*>/, "")
+      #   else
+      #     lines[spreads.index(d)]['line'] = "n/a"
+      #   end
+      # end
       
+      rows = (doc/"/html/body/div/div/div[4]/form/div/div[2]/div[7]/div/div.event")
+
       rows.each do |d|
-          lines.push(Hash.new)
-          lines[rows.index(d)]['game'] = {}
-          d.inner_html.match(/(.*)(\sat\s)(.*)(,.*)/)
-          lines[rows.index(d)]['game']['home'] = $3
-          lines[rows.index(d)]['game']['away'] = $1
-          lines[rows.index(d)]['game']['time'] = $4.gsub(", ", "")
-      end
-      
-      spreads = (doc/"/html/body/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tr.oddrow")
-      
-      spreads.each do |d|
-        if d.at("td.sortcell").inner_html.gsub!(/.*>/, "") != "n/a"
-          lines[spreads.index(d)]['line'] = d.at("td[2]").inner_html.gsub!(/.*>/, "")
+        away = d.at("table/tr/td[3]/div.competitor-name/a").inner_html
+        home = d.at("table/tr[2]/td[3]/div.competitor-name/a").inner_html
+        line = d.at("table/tr[2]/td[4]/div.line-normal")
+        if line.at("a").nil?
+          line = "n/a"
         else
-          lines[spreads.index(d)]['line'] = "n/a"
+          line = line.at("a").inner_html
         end
-      end
+        lines.push(Hash.new)
+        lines[rows.index(d)]['game'] = {}
+        lines[rows.index(d)]['game']['home'] = home.gsub(/\s\w*$/, '')
+        lines[rows.index(d)]['game']['away'] = away.gsub(/\s\w*$/, '')
+        lines[rows.index(d)]['game']['line'] = line.gsub(/\s\(.*/, '').to_f
+       end
       
       return lines
 

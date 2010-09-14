@@ -47,8 +47,12 @@ class Standing < ActiveRecord::Base
       record['points'] = points
       
       if Week.current.first.id > 1
-        last_week = u.standings.where("week_id = #{Week.previous}")
-        record['last_week'] = "#{last_week[0].wins}-#{last_week[0].losses}-#{last_week[0].pushes}"
+        last_week = u.standings.where("week_id = #{Week.previous.id}")
+        if !last_week.empty?
+          record['last_week'] = "#{last_week[0].wins}-#{last_week[0].losses}-#{last_week[0].pushes}"
+        else
+          record['last_week'] = "-"
+        end
       else
         record['last_week'] = "-"
       end

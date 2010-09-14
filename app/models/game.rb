@@ -13,7 +13,7 @@ class Game < ActiveRecord::Base
     games = week.games 
     games.each do |game|
       lines.each do |line|
-        if game.away == line['game']['away'] && game.home == line['game']['home']
+        if game.away =~ /#{line['game']['away']}/ && game.home =~ /#{line['game']['home']}/
           game.update_attributes(:spread => line['line'])
         end
       end
@@ -57,10 +57,14 @@ class Game < ActiveRecord::Base
           lines[rows.index(d)]['game']['time'] = $4.gsub(", ", "")
       end
       
-      spreads = (doc/"/html/body/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tr.oddrow/td[2]")
+      spreads = (doc/"/html/body/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tr.oddrow")
       
       spreads.each do |d|
-          lines[spreads.index(d)]['line'] = d.inner_html.gsub!(/.*>/, "")
+        if d.at("td.sortcell").inner_html.gsub!(/.*>/, "") != "n/a"
+          lines[spreads.index(d)]['line'] = d.at("td[2]").inner_html.gsub!(/.*>/, "")
+        else
+          lines[spreads.index(d)]['line'] = "n/a"
+        end
       end
       
       return lines

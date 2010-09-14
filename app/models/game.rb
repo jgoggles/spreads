@@ -13,6 +13,7 @@ class Game < ActiveRecord::Base
     games = week.games 
     games.each do |game|
       lines.each do |line|
+        game_awa
         if game.away =~ /#{line['game']['away']}/ && game.home =~ /#{line['game']['home']}/
           game.update_attributes(:spread => line['line'])
         end

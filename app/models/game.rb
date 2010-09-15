@@ -13,7 +13,7 @@ class Game < ActiveRecord::Base
     games = week.games 
     games.each do |game|
       lines.each do |line|
-        if line['game']['away'] == game.away && line['game']['home'] == game.home
+        if game.away =~ /#{line['game']['away']}/ && game.home =~ /#{line['game']['home']}/
           game.update_attributes(:spread => line['game']['line'])
         end
       end
@@ -82,7 +82,7 @@ class Game < ActiveRecord::Base
         lines[rows.index(d)]['game'] = {}
         lines[rows.index(d)]['game']['home'] = home.gsub(/\s\w*$/, '')
         lines[rows.index(d)]['game']['away'] = away.gsub(/\s\w*$/, '')
-        lines[rows.index(d)]['game']['line'] = line.gsub(/\s\(.*/, '').to_f
+        lines[rows.index(d)]['game']['line'] = line.gsub(/\s\(.*/, '').gsub("½", ".5")
        end
       
       return lines

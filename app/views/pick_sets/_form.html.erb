@@ -29,7 +29,7 @@
 					<div class="teamLine">
 	          <%= check_box_tag("pick_#{game.id}_1", '1', false, :class => 'pick') %>
 	          <span class="team home"><%= game.home %></span>
-	          <span class="spread"><%= game.spread %></span>
+	          <span class="spread"><%= game.spread.to_f %></span>
 					</div>
           <%= p.hidden_field :is_home, :class => 'set_team' %>
           <%= p.hidden_field :spread, :class => 'set_spread' %>

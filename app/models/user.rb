@@ -24,4 +24,16 @@ class User < ActiveRecord::Base
       return false
     end
   end
+  
+  def check_for_zero_picks
+    if pick_sets.where("week_id = #{Week.previous.id}").empty?
+      pick_set = PickSet.create!(:user_id => self.id, :week_id => Week.previous.id)
+      3.times {Pick.create!(:spread => 0, :result => -1, :game_id => 0, :pick_set_id => pick_set.id)}
+    else
+      pick_sets.where("week_id = #{Week.previous.id}").each do |ps|
+        ps.check_for_non_picks
+      end
+    end
+  end
+  
 end

@@ -21,16 +21,11 @@ task :generate_standings => :environment do
 
   week_id = ENV['WEEK_ID'] || week.id
   
-#  pick_sets = PickSet.where("week_id = #{week_id}")
   pick_sets = Week.find(week_id).pick_sets
   Standing.generate_standing(pick_sets)
 end
 
 desc "Generates losses for non-picks"
 task :scrub_non_picks => :environment do
-  week = Week.previous
-  week_id = ENV['WEEK_ID'] || week.id
-
-  pick_sets = Week.find(week_id).pick_sets
-  pick_sets.each {|ps| ps.check_for_non_picks}
+  User.all.each {|u| u.check_for_zero_picks}
 end

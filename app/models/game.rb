@@ -10,28 +10,32 @@ class Game < ActiveRecord::Base
   def self.with_spreads(user=nil)
     lines = get_lines
     week = Week.current.first
-    games = week.games 
-    games.each do |game|
-      lines.each do |line|
-        if game.away =~ /#{line['game']['away']}/ && game.home =~ /#{line['game']['home']}/
-          game.update_attributes(:spread => line['game']['line'])
+    games = week.games
+    begin
+      games.each do |game|
+        lines.each do |line|
+          if game.away =~ /#{line['game']['away']}/ && game.home =~ /#{line['game']['home']}/
+            game.update_attributes(:spread => line['game']['line'])
+          end
         end
       end
-    end
 
-    if user
-      if user.pick_sets.where("week_id = #{week.id}")[0]
-        picks = user.pick_sets.where("week_id = #{week.id}")[0].picks
-        picks.each do |p|
-          games.each do |g|
-            if g.id == p.game_id
-              g.update_attributes(:spread => nil)
+      if user
+        if user.pick_sets.where("week_id = #{week.id}")[0]
+          picks = user.pick_sets.where("week_id = #{week.id}")[0].picks
+          picks.each do |p|
+            games.each do |g|
+              if g.id == p.game_id
+                g.update_attributes(:spread => nil)
+              end
             end
           end
         end
       end
+      return games
+    rescue
+       return false
     end
-    return games
   end
   
   def self.get_lines 
@@ -68,21 +72,23 @@ class Game < ActiveRecord::Base
       # end
       
       rows = (doc/"/html/body/div/div/div[4]/form/div/div[2]/div[7]/div/div.event")
-
-      rows.each do |d|
-        away = d.at("table/tr/td[3]/div.competitor-name/a").inner_html
-        home = d.at("table/tr[2]/td[3]/div.competitor-name/a").inner_html
-        line = d.at("table/tr[2]/td[4]/div.line-normal")
-        if line.at("a").nil?
-          line = "n/a"
-        else
-          line = line.at("a").inner_html
-        end
-        lines.push(Hash.new)
-        lines[rows.index(d)]['game'] = {}
-        lines[rows.index(d)]['game']['home'] = home.gsub(/\s\w*$/, '')
-        lines[rows.index(d)]['game']['away'] = away.gsub(/\s\w*$/, '')
-        lines[rows.index(d)]['game']['line'] = line.gsub(/\s\(.*/, '').gsub("½", ".5")
+      
+      if rows
+        rows.each do |d|
+          away = d.at("table/tr/td[3]/div.competitor-name/a").inner_html
+          home = d.at("table/tr[2]/td[3]/div.competitor-name/a").inner_html
+          line = d.at("table/tr[2]/td[4]/div.line-normal")
+          if line.at("a").nil?
+            line = "n/a"
+          else
+            line = line.at("a").inner_html
+          end
+          lines.push(Hash.new)
+          lines[rows.index(d)]['game'] = {}
+          lines[rows.index(d)]['game']['home'] = home.gsub(/\s\w*$/, '')
+          lines[rows.index(d)]['game']['away'] = away.gsub(/\s\w*$/, '')
+          lines[rows.index(d)]['game']['line'] = line.gsub(/\s\(.*/, '').gsub("½", ".5")
+         end
        end
       
       return lines

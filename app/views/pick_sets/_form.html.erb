@@ -1,54 +1,59 @@
-<% content_for :head do %>
-  <%= javascript_include_tag 'pick_controls' %>
-<% end %>
-<%= form_for(@pick_set) do |f| %>
-  <% if @pick_set.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@pick_set.errors.count, "error") %> prohibited your picks from being saved:</h2>
+<% if @games %>
+	<% content_for :head do %>
+	  <%= javascript_include_tag 'pick_controls' %>
+	<% end %>
+	
+	<%= form_for(@pick_set) do |f| %>
+	  <% if @pick_set.errors.any? %>
+	    <div id="error_explanation">
+	      <h2><%= pluralize(@pick_set.errors.count, "error") %> prohibited your picks from being saved:</h2>
 
-      <ul>
-      <% @pick_set.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+	      <ul>
+	      <% @pick_set.errors.full_messages.each do |msg| %>
+	        <li><%= msg %></li>
+	      <% end %>
+	      </ul>
+	    </div>
+	  <% end %>
 
-  <ul id="gameList" style="list-style: none">
-    <% @games.each do |game| %>
-      <li id="<%= game.id %>" class="<%= cycle('shade', ' ') %>">
-      <% if game.spread != "n/a" && game.date > Time.now %>
-        <%= f.fields_for(:picks, Pick.new) do |p| %>
+	  <ul id="gameList" style="list-style: none">
+	    <% @games.each do |game| %>
+	      <li id="<%= game.id %>" class="<%= cycle('shade', ' ') %>">
+	      <% if game.spread != "n/a" && game.date > Time.now %>
+	        <%= f.fields_for(:picks, Pick.new) do |p| %>
+						<div class="teamLine">
+		          <%= check_box_tag("pick_#{game.id}_0", '1', false, :class => 'pick') %>
+		          <span class="team away"><%= game.away %></span>
+		          <span class="spread">
+		            <%= game.spread.to_f * -1 > 0 ? '+' : '' %><%= game.spread.to_f * -1 %>
+		          </span>
+	          </div>
+						<div class="teamLine">
+		          <%= check_box_tag("pick_#{game.id}_1", '1', false, :class => 'pick') %>
+		          <span class="team home"><%= game.home %></span>
+		          <span class="spread"><%= game.spread.to_f > 0 ? '+' : '' %><%= game.spread.to_f %></span>
+						</div>
+	          <%= p.hidden_field :is_home, :class => 'set_team' %>
+	          <%= p.hidden_field :spread, :class => 'set_spread' %>
+	          <%= p.hidden_field :game_id, :value => game.id %>
+	        <% end %>
+	      <% else %>
+	        <div class="gameOff"><h2>OFF</h2></div>
 					<div class="teamLine">
-	          <%= check_box_tag("pick_#{game.id}_0", '1', false, :class => 'pick') %>
-	          <span class="team away"><%= game.away %></span>
-	          <span class="spread">
-	            <%= game.spread.to_f * -1 > 0 ? '+' : '' %><%= game.spread.to_f * -1 %>
-	          </span>
-          </div>
-					<div class="teamLine">
-	          <%= check_box_tag("pick_#{game.id}_1", '1', false, :class => 'pick') %>
-	          <span class="team home"><%= game.home %></span>
-	          <span class="spread"><%= game.spread.to_f > 0 ? '+' : '' %><%= game.spread.to_f %></span>
+		        <%= game.away %>
 					</div>
-          <%= p.hidden_field :is_home, :class => 'set_team' %>
-          <%= p.hidden_field :spread, :class => 'set_spread' %>
-          <%= p.hidden_field :game_id, :value => game.id %>
-        <% end %>
-      <% else %>
-        <div class="gameOff"><h2>OFF</h2></div>
-				<div class="teamLine">
-	        <%= game.away %>
-				</div>
-				<div class="teamLine">
-	        <%= game.home %>
-				</div>
-      <% end %>
-    <% end %>
-    </li>
-  </ul>
+					<div class="teamLine">
+		        <%= game.home %>
+					</div>
+	      <% end %>
+	    </li>
+			<% end %>
+	  </ul>
 
-  <div class="actions" style="margin:12px 0">
-    <%= f.submit 'Submit', :onclick => 'return confirm("Are you sure you want to submit these picks? Once submitted they cannot be changed.")' %>
-  </div>
+	  <div class="actions" style="margin:12px 0">
+	    <%= f.submit 'Submit', :onclick => 'return confirm("Are you sure you want to submit these picks? Once submitted they cannot be changed.")' %>
+	  </div>
+	<% end %>
+<% else %>
+	<h2>Problem connecting to data source, please check back later.</h2>
 <% end %>

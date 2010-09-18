@@ -76,8 +76,15 @@ class Game < ActiveRecord::Base
       if rows
         rows.each do |d|
           away = d.at("table/tr/td[3]/div.competitor-name/a").inner_html
-          home = d.at("table/tr[2]/td[3]/div.competitor-name/a").inner_html
-          line = d.at("table/tr[2]/td[4]/div.line-normal")
+          
+          if d.at("table/tr[2]/td[3]/div.competitor-name/a").nil?
+            home = d.at("table/tr[2]/td[2]/div.competitor-name/a").inner_html
+            line = d.at("table/tr[2]/td[3]/div.line-normal")
+          else
+            home = d.at("table/tr[2]/td[3]/div.competitor-name/a").inner_html
+            line = d.at("table/tr[2]/td[4]/div.line-normal")
+          end
+          
           if line.at("a").nil?
             line = "n/a"
           else

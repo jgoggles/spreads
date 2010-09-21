@@ -6,6 +6,8 @@ task :get_scores => :environment do
     week = Week.current.first
   end
 
+  week_id = ENV['WEEK_ID'] || week.id
+
   puts "Getting scores for Week #{week.name}..."
   Game.get_scores(week)
   puts "Done"
@@ -27,5 +29,7 @@ end
 
 desc "Generates losses for non-picks"
 task :scrub_non_picks => :environment do
-  User.all.each {|u| u.check_for_zero_picks}
+  week_id = ENV['WEEK_ID'] || Week.previous.id
+
+  User.all.each {|u| u.check_for_zero_picks(week_id)}
 end

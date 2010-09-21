@@ -7,6 +7,7 @@ class PickSetsController < ApplicationController
     @current_pick_set = Week.current.first.pick_sets.where("user_id = #{current_user.id}").first
     # @league_pick_sets = User.where("id != #{current_user.id}") 
     @week = Week.current.first
+    @title = "Week #{@week.name} picks"
 
     respond_to do |format|
       format.html # index.html.erb
@@ -34,6 +35,7 @@ class PickSetsController < ApplicationController
       @pick_set = PickSet.new
       @games = Game.with_spreads
       @week = Week.current.first
+      @title = "Week #{@week.name} picks"
 
       respond_to do |format|
         format.html # new.html.erb
@@ -47,6 +49,7 @@ class PickSetsController < ApplicationController
     @pick_set = PickSet.find(params[:id])
     @games = Game.with_spreads(current_user)
     @week = Week.current.first
+    @title = "Week #{@week.name} picks"
   end
 
   # POST /pick_sets
@@ -57,6 +60,7 @@ class PickSetsController < ApplicationController
     @pick_set.week_id = Week.current.first.id
     @games = Game.with_spreads
     @week = Week.current.first
+    @title = "Week #{@week.name} picks"
 
     respond_to do |format|
       if @pick_set.save
@@ -75,6 +79,7 @@ class PickSetsController < ApplicationController
     @pick_set = PickSet.find(params[:id])
     @games = Game.with_spreads(current_user)
     @week = Week.current.first
+    @title = "Week #{@week.name} picks"
 
     respond_to do |format|
       if @pick_set.update_attributes(params[:pick_set])

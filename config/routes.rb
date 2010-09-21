@@ -3,9 +3,8 @@ Spreads::Application.routes.draw do
 
   devise_for :users
 
-  resources :picks
-
   match 'standings/' => 'standings#index'
+  resources :weeks
 
   root :to => "pick_sets#index"
   # The priority is based upon order of creation:

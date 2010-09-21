@@ -1,0 +1,12 @@
+<h1><%= @week.name %></h1>
+
+<% @users.each do |u| %>
+  <h2><%= u.email %></h2>
+  <ul>
+    <% u.pick_sets.where("week_id = #{@week.id}").each do |ps| %>
+      <% ps.picks.each do |p| %>
+        <li><%= p.game_id %></li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>

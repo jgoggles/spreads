@@ -2,7 +2,7 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-  <title>Spreads</title>
+  <title>Spreads - <%= @title || controller.controller_name.humanize %></title>
   <%= stylesheet_link_tag 'main' %>
   <%= javascript_include_tag :defaults %>
   <%= yield :head %>

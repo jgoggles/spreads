@@ -7,7 +7,11 @@ class WeeksController < ApplicationController
   end
 
   def show
-    @week = Week.find(params[:id])
-    @users = User.all
+    if params[:id].to_i >= Week.current.first.id
+      redirect_to weeks_url
+    else
+      @week = Week.find(params[:id])
+      @users = User.all
+    end
   end
 end

@@ -16,11 +16,13 @@
 		  <ul id="userNav">
 		    <% if user_signed_in? %>
 		      <li><%= current_user.email %></li>
-					<li>|</li>
-					<li><%= link_to "Make picks", '/pick_sets' %> </li>
-					<li>|</li>
-					<li><%= link_to "Standings", '/standings' %> </li>
-					<li>|</li>
+              <li>|</li>
+              <li><%= link_to "Make picks", '/pick_sets' %> </li>
+              <li>|</li>
+              <li><%= link_to "Standings", '/standings' %> </li>
+              <li>|</li>
+              <li><%= link_to "Edit Profile", edit_user_registration_path %></li>
+              <li>|</li>
 		      <li><%= link_to "Sign out", destroy_user_session_path %></li>
 		    <% else %>
 		      <li><%= link_to "Sign in", new_user_session_path %></li>

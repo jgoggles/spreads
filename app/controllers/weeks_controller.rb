@@ -8,5 +8,6 @@ class WeeksController < ApplicationController
 
   def show
     @week = Week.find(params[:id])
+    @users = User.all
   end
 end

@@ -8,7 +8,7 @@ task :get_scores => :environment do
 
   week_id = ENV['WEEK_ID'] || week.id
 
-  puts "Getting scores for Week #{week.name}..."
+  puts "Getting scores for Week #{Week.find(week_id).name}..."
   Game.get_scores(week)
   puts "Done"
 end

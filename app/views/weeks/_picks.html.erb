@@ -1,0 +1,68 @@
+<h1>Week <%= @week.name %> Picks</h1>
+
+<ul id="weekList">
+  <li>Choose week:</li>
+  <% Week.all.each do |w| %>
+    <% if w.id < Week.current.first.id %>
+      <li><%= link_to w.name, "/weeks/#{w.id}" %></li>
+    <% end %>
+  <% end %>
+</ul>
+<div class="clearBoth"></div>
+
+<ul style="background: #eee;font-size: 12px;margin-bottom: 12px;padding: 8px;">
+  <li><strong>Home picks:</strong> <%= @week.home_vs_away[0].to_i %></li>
+  <li><strong>Away picks:</strong>  <%= @week.home_vs_away[1].to_i %></li>
+
+  <li><strong>Most action:</strong>
+    <ul style="margin-left: 18px;">
+      <% @week.most_action.each do |g| %>
+        <li><%= "#{g['game'].away} @ #{g['game'].home}: #{g['freq']} picks" %></li>
+      <% end %>
+    </ul>
+  </li>
+</ul>
+  
+<ul id="seasonStandingsHeager" class="standing standingsHeader">
+  <li class="pick"><h2>Pick</h2></li>
+    <li class="result"><h2>Result</h2></li>
+</ul>
+
+<% @users.each do |u| %>
+  <ul class="standingRow">
+    <% standing = Standing.where("week_id = #{@week.id}").where("user_id = #{u.id}").first %>
+    <li class="week">
+      <%= u.email %>
+      <% if standing %>
+          <span class="weekRecord">(<%= "#{standing.wins}-#{standing.losses}-#{standing.pushes}"%>)</span>
+      <% end %>
+    </li>
+  </ul>
+  <% u.pick_sets.where("week_id = #{@week.id}").each do |ps| %>
+    <% ps.picks.each do |p| %>
+      <ul class="standing standingRow">
+        <li class="pick">
+          <% if p.game_id == 0 %>
+              Non-pick
+          <% else %>
+              <%= p.team %>
+              <%= p.spread > 0 ? "+" : '' %><%= p.spread %>
+              (<% if p.is_home %>
+                  vs <%= Game.find(p.game_id).away %>
+              <% else %>
+                  at <%= Game.find(p.game_id).home %>
+              <% end%>
+              )
+          <% end %>
+        </li>
+        <% if p.result == 1 %>
+          <li class="result win">Win</li>
+        <% elsif p.result == -1 %>
+          <li class="result loss">Loss</li>
+        <% elsif p.result == 0 %>
+          <li class="result push">Push</li>
+        <% end %> 
+      </ul>
+    <% end %>
+  <% end %>
+<% end %>

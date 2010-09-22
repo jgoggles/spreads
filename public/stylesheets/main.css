@@ -1,6 +1,7 @@
 @import url('reset.css');
 
 body{background:#fff url(/images/background-v2.png) 0 0 repeat-x; color: #444; font-size: 18px; font-weight: 200;}
+strong {font-weight: bold;}
 
 h1 {color: #444; font-size: 30px; font-weight: 200; margin-bottom: 10px;}
 h2 {font-size: 22px; font-weight: 200; }
@@ -51,7 +52,11 @@ p {margin-bottom: 10px;}
 .standing .win {color: green;}
 .standing .loss {color: #c00;}
 
-
+#weekList {border-bottom: 1px solid #E2E2E2; border-top: 1px solid #E2E2E2; font-size: 12px; margin: -10px 0 12px 0; 
+  overflow: hidden; padding: 3px 0;}
+#weekList li {float: left;} 
+#weekList li a {display: block; margin: 0 2px; padding: 0 4px;}
+#weekList li a:hover {background: #4183C4; margin: -6px 2px; padding: 6px 4px; text-decoration: none;}
 
 /* Error Reporting Styles */
 

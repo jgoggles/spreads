@@ -15,7 +15,7 @@
   <li><strong>Away picks:</strong>  <%= @week.home_vs_away[1].to_i %></li>
 
   <li><strong>Most action:</strong>
-    <ul style="margin-left: 18px;">
+    <ul>
       <% @week.most_action.each do |g| %>
         <li><%= "#{g['game'].away} @ #{g['game'].home}: #{g['freq']} picks" %></li>
       <% end %>

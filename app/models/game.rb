@@ -26,7 +26,7 @@ class Game < ActiveRecord::Base
           picks.each do |p|
             games.each do |g|
               if g.id == p.game_id
-                g.update_attributes(:spread => nil)
+                g.update_attributes(:spread => "n/a")
               end
             end
           end

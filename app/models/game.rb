@@ -71,7 +71,8 @@ class Game < ActiveRecord::Base
       #   end
       # end
       
-      rows = (doc/"/html/body/div/div/div[4]/form/div/div[2]/div[7]/div/div.event")
+#      rows = (doc/"/html/body/div/div/div[4]/form/div/div[2]/div[7]/div/div.event")
+      rows = (doc/"/html/body/div/div/div[4]/form/div/div[2]/div[6]/div/div.event")
       
       if rows
         rows.each do |d|

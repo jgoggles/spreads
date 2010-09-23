@@ -47,6 +47,7 @@ GEM
       treetop (>= 1.4.5)
     mime-types (1.16)
     mysql2 (0.2.3)
+    nokogiri (1.4.3.1)
     polyglot (0.3.1)
     postageapp (1.0.6)
       json (= 1.2.4)
@@ -84,5 +85,6 @@ DEPENDENCIES
   fastercsv
   hpricot
   mysql2
+  nokogiri
   postageapp
   rails (= 3.0.0)

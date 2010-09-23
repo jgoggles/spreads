@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'open-uri'
 require 'hpricot'
+require 'nokogiri'
 
 class Game < ActiveRecord::Base
   attr_accessor :spread
@@ -39,68 +40,33 @@ class Game < ActiveRecord::Base
   end
   
   def self.get_lines 
-    @url = "http://sports.bodog.com/sports-betting/nfl-football.jsp"
-    @response = ''
+    url = 'http://sports.bodog.com/sports-betting/nfl-football.jsp'
 
     begin
-      open(@url) { |f|
-        @response = f.read
-      }
-        
-      doc = Hpricot(@response)
-      lines = []
-      
-      # rows = (doc/"/html/body/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tr.stathead/td")
-      # 
-      # rows.each do |d|
-      #     lines.push(Hash.new)
-      #     lines[rows.index(d)]['game'] = {}
-      #     d.inner_html.match(/(.*)(\sat\s)(.*)(,.*)/)
-      #     lines[rows.index(d)]['game']['home'] = $3
-      #     lines[rows.index(d)]['game']['away'] = $1
-      #     lines[rows.index(d)]['game']['time'] = $4.gsub(", ", "")
-      # end
-      # 
-      # spreads = (doc/"/html/body/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tr.oddrow")
-      # 
-      # spreads.each do |d|
-      #   if d.at("td.sortcell").inner_html.gsub!(/.*>/, "") != "n/a" && d.at("td[2]").inner_html.gsub!(/<.*/, "") != "n/a"
-      #     lines[spreads.index(d)]['line'] = d.at("td[2]").inner_html.gsub!(/.*>/, "")
-      #   else
-      #     lines[spreads.index(d)]['line'] = "n/a"
-      #   end
-      # end
-      
-#      rows = (doc/"/html/body/div/div/div[4]/form/div/div[2]/div[7]/div/div.event")
-      rows = (doc/"/html/body/div/div/div[4]/form/div/div[2]/div[6]/div/div.event")
-      
-      if rows
-        rows.each do |d|
-          away = d.at("table/tr/td[3]/div.competitor-name/a").inner_html
-          
-          if d.at("table/tr[2]/td[3]/div.competitor-name/a").nil?
-            home = d.at("table/tr[2]/td[2]/div.competitor-name/a").inner_html
-            line = d.at("table/tr[2]/td[3]/div.line-normal")
-          else
-            home = d.at("table/tr[2]/td[3]/div.competitor-name/a").inner_html
-            line = d.at("table/tr[2]/td[4]/div.line-normal")
-          end
-          
-          if line.at("a").nil?
-            line = "n/a"
-          else
-            line = line.at("a").inner_html
-          end
-          lines.push(Hash.new)
-          lines[rows.index(d)]['game'] = {}
-          lines[rows.index(d)]['game']['home'] = home.gsub(/\s\w*$/, '')
-          lines[rows.index(d)]['game']['away'] = away.gsub(/\s\w*$/, '')
-          lines[rows.index(d)]['game']['line'] = line.gsub(/\s\(.*/, '').gsub("½", ".5")
-         end
-       end
-      
-      return lines
+      doc = Nokogiri::HTML(open(url))
 
+      rows = doc.css('div.event')
+      lines = []
+
+      if rows
+        rows.each do |a|
+          away = a.css('div.competitor-name a').first.content
+          home = a.css('div.competitor-name a')[1].content
+          if a.css('div.line-normal a')[1].nil?
+              line = "n/a"
+          else
+              line = a.css('div.line-normal a')[1].content
+          end
+
+          lines.push(Hash.new)
+          lines[rows.index(a)]['game'] = {}
+          lines[rows.index(a)]['game']['home'] = home.gsub(/\s\w*$/, '')
+          lines[rows.index(a)]['game']['away'] = away.gsub(/\s\w*$/, '')
+          lines[rows.index(a)]['game']['line'] = line.gsub(/\s\(.*/, '').gsub("½", ".5")
+        end
+      end
+
+      return lines
     rescue Exception => e
       print e, "\n"
     end

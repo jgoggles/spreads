@@ -10,6 +10,7 @@ gem 'devise'
 gem 'hpricot'
 gem 'fastercsv'
 gem 'postageapp'
+gem 'nokogiri'
 
 # Use unicorn as the web server
 # gem 'unicorn'

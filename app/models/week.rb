@@ -12,7 +12,7 @@ class Week < ActiveRecord::Base
   end
   
   def home_vs_away
-    home, away = 0.0, 0.0
+    home, away = 0, 0
     self.pick_sets.each do |ps|
       ps.picks.each do |p|
         if p.is_home
@@ -25,6 +25,20 @@ class Week < ActiveRecord::Base
     return [home, away]
   end
   
+  def favorite_vs_underdog
+    favorite, underdog = 0, 0
+    self.pick_sets.each do |ps|
+      ps.picks.each do |p|
+        if p.spread < 0
+          favorite +=1
+        elsif p.spread > 0 
+          underdog +=1
+        end
+      end
+    end
+    return [favorite, underdog]
+  end
+
   def most_action
     game_ids = []
     self.pick_sets.each do |ps|

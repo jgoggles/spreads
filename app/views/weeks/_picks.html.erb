@@ -11,8 +11,8 @@
 <div class="clearBoth"></div>
 
 <ul style="background: #eee;font-size: 12px;margin-bottom: 12px;padding: 8px;">
-  <li><strong>Home picks:</strong> <%= @week.home_vs_away[0].to_i %></li>
-  <li><strong>Away picks:</strong>  <%= @week.home_vs_away[1].to_i %></li>
+  <li><strong>Home/Away:</strong> <%= "#{@week.home_vs_away[0]}/#{@week.home_vs_away[1]}" %></li>
+  <li><strong>Favorites/Underdogs:</strong> <%= "#{@week.favorite_vs_underdog[0]}/#{@week.favorite_vs_underdog[1]}" %></li>
 
   <li><strong>Most action:</strong>
     <ul>

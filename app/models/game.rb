@@ -50,12 +50,19 @@ class Game < ActiveRecord::Base
 
       if rows
         rows.each do |a|
-          away = a.css('div.competitor-name a').first.content
-          home = a.css('div.competitor-name a')[1].content
+          if a.css('div.competitor-name a').first.nil?
+            away = a.css('div.competitor-name span.disabled').first.content
+            home = a.css('div.competitor-name span.disabled')[1].content
+          else
+            away = a.css('div.competitor-name a').first.content
+            home = a.css('div.competitor-name a')[1].content
+          end
+
           if a.css('div.line-normal a')[1].nil?
               line = "n/a"
           else
               line = a.css('div.line-normal a')[1].content
+              puts "lines"
           end
 
           lines.push(Hash.new)

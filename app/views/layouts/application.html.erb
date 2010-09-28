@@ -35,10 +35,11 @@
 		
 		<div id="content">
 			<div id="innerWrapper">
-				<% flash.each do |name, msg| %>
+              <noscript style="color:red;">YOU MUST HAVE JAVASCRIPT ENABLED TO MAKE PICKS</noscript>
+              <% flash.each do |name, msg| %>
 			    <%= content_tag :div, msg, :id => "flash_#{name}" %>
 			  <% end %>
-				<%= yield %>
+              <%= yield %>
 			</div>
 		</div>
 	</div>

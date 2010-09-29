@@ -47,7 +47,7 @@ class PickSetsController < ApplicationController
   # GET /pick_sets/1/edit
   def edit
     @pick_set = PickSet.find(params[:id])
-    @games = Game.with_spreads(current_user)
+    @games = Game.with_spreads(current_user, true)
     @week = Week.current.first
     @title = "Week #{@week.name} picks"
   end

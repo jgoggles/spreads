@@ -1,4 +1,6 @@
 Spreads::Application.routes.draw do
+  get "test/lines"
+
   resources :pick_sets
 
   devise_for :users

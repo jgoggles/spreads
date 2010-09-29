@@ -8,8 +8,12 @@ class Game < ActiveRecord::Base
   has_many :picks
   belongs_to :week
 
-  def self.with_spreads(user=nil)
-    lines = get_lines
+  def self.with_spreads(user=nil, test=false)
+    if test
+      lines = get_lines_2
+    else
+      lines = get_lines
+    end
     week = Week.current.first
     games = week.games
     begin
@@ -62,7 +66,6 @@ class Game < ActiveRecord::Base
               line = "n/a"
           else
               line = a.css('div.line-normal a')[1].content
-              puts "lines"
           end
 
           lines.push(Hash.new)
@@ -73,6 +76,40 @@ class Game < ActiveRecord::Base
         end
       end
 
+      return lines
+    rescue Exception => e
+      print e, "\n"
+    end
+  end
+  
+  def self.get_lines_2
+    url = 'http://www.sportsinteraction.com/football/nfl-betting-lines/'
+
+    begin
+      doc = Nokogiri::HTML(open(url))
+
+      rows = doc.css('div.game')
+      lines = []
+
+      if rows
+        rows.each do |a|
+          matchup = a.at_css('span.title a').content.match(/(.*)\sat\s(.*)/)
+          away = $1.strip!
+          home = $2.strip!
+
+          away.gsub!(/\sJets|\sGiants/, "")
+          home.gsub!(/\sJets|\sGiants/, "")
+          
+          line = a.at_css('div ul[2] li[2] span span.handicap').content
+
+          lines.push(Hash.new)
+          lines[rows.index(a)]['game'] = {}
+          lines[rows.index(a)]['game']['home'] = home
+          lines[rows.index(a)]['game']['away'] = away
+          lines[rows.index(a)]['game']['line'] = line.strip!
+        end
+      end
+      puts lines
       return lines
     rescue Exception => e
       print e, "\n"

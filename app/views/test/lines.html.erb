@@ -1,0 +1,12 @@
+<h1>Test#lines</h1>
+
+<% @games.each do |game| %>
+<ul style="border-bottom: #ccc 1px solid; margin-bottom: 8px; padding: 5px;">
+  <li>
+    <%= "#{game.away} #{game.spread.to_f * -1}" %>
+  </li>
+  <li>
+    <%= "#{game.home} #{game.spread}" %>
+  </li>
+</ul>
+<% end %>

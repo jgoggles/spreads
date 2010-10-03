@@ -62,10 +62,12 @@ class Game < ActiveRecord::Base
             home = a.css('div.competitor-name a')[1].content
           end
 
-          if a.css('div.line-normal a')[1].nil?
+          if a.css('div.line-normal a')[1].nil? && a.css('div.line-sharp a')[1].nil?
               line = "n/a"
-          else
+          elsif !a.css('div.line-normal a')[1].nil? && a.css('div.line-sharp a')[1].nil?
               line = a.css('div.line-normal a')[1].content
+          elsif a.css('div.line-normal a')[1].nil? && !a.css('div.line-sharp a')[1].nil?
+              line = a.css('div.line-sharp a')[1].content
           end
 
           lines.push(Hash.new)

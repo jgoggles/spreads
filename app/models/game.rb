@@ -10,9 +10,9 @@ class Game < ActiveRecord::Base
 
   def self.with_spreads(user=nil, test=false)
     if test
-      lines = get_lines_2
-    else
       lines = get_lines
+    else
+      lines = get_lines_2
     end
     week = Week.current.first
     games = week.games

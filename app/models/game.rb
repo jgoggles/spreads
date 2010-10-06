@@ -96,7 +96,6 @@ class Game < ActiveRecord::Base
       if rows
         rows.each do |a|
           if !a.at_css('div ul[2] li[2] span span.handicap').nil?
-            puts "jo"
             matchup = a.at_css('span.title a').content.match(/(.*)\sat\s(.*)/)
             away = $1.strip!
             home = $2.strip!
@@ -110,7 +109,11 @@ class Game < ActiveRecord::Base
             lines[rows.index(a)]['game'] = {}
             lines[rows.index(a)]['game']['home'] = home
             lines[rows.index(a)]['game']['away'] = away
-            lines[rows.index(a)]['game']['line'] = line.strip!
+            if line.strip.size == 2 
+              lines[rows.index(a)]['game']['line'] = "n/a"
+            else
+              lines[rows.index(a)]['game']['line'] = line.strip!
+            end
           else
             lines.push(Hash.new)
             lines[rows.index(a)]['game'] = {}

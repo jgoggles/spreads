@@ -109,8 +109,10 @@ class Game < ActiveRecord::Base
             lines[rows.index(a)]['game'] = {}
             lines[rows.index(a)]['game']['home'] = home
             lines[rows.index(a)]['game']['away'] = away
-            if line.strip.size == 2 
+            if line.strip.size == 2 && a.at_css('div ul[2] li[2] span span.price').content.strip.size == 2
               lines[rows.index(a)]['game']['line'] = "n/a"
+            elsif line.strip.size == 2 && a.at_css('div ul[2] li[2] span span.price').content.strip.size > 2
+              lines[rows.index(a)]['game']['line'] = "0"
             else
               lines[rows.index(a)]['game']['line'] = line.strip!
             end

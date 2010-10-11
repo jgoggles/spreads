@@ -1,8 +1,16 @@
 class WeeksController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :check_pick_total
+
+  def check_pick_total
+    if PickSet.all_picks_in
+      @week_list = Week.current.first
+    else
+      @week_list = Week.previous
+    end
+  end
 
   def index
-    @week = Week.previous
+    @week = @week_list
     @users = User.all
   end
 

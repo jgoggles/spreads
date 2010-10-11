@@ -19,4 +19,15 @@ class PickSet < ActiveRecord::Base
       end
     end
   end
+
+  def self.all_picks_in(week=Week.current.first)
+    pick_sets = find_all_by_week_id(week.id)
+    pick_total = 0
+    pick_sets.each {|ps| pick_total += ps.picks.size}
+    if pick_total == 27 
+      return true
+    else
+      return false
+    end
+  end
 end

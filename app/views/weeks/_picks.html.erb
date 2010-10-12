@@ -3,7 +3,7 @@
 <ul id="weekList">
   <li>Choose week:</li>
   <% Week.all.each do |w| %>
-    <% if w.id < Week.current.first.id %>
+    <% if w.id <= @week_list.id %>
       <li><%= link_to w.name, "/weeks/#{w.id}" %></li>
     <% end %>
   <% end %>

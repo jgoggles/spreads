@@ -19,7 +19,7 @@ p {margin-bottom: 10px;}
 }
 
 #header{margin:0 auto 15px auto;width:958px;height:91px;min-width:950px;}
-#logo {margin: 8px 0 0 0;}
+#logo {margin: 8px 0 0 0; float:left;}
 #userNav {color: #999;float:right;font-size: 12px;margin: 12px 0 0 0;}
 #userNav li {float: left; margin-left: 6px;}
 

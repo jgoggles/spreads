@@ -1,3 +1,4 @@
+<% comment do %>
 <% if @games %>
 	<% content_for :head do %>
 	  <%= javascript_include_tag 'pick_controls' %>
@@ -61,3 +62,5 @@
 <% else %>
 	<h2>Problem connecting to data source, please check back later.</h2>
 <% end %>
+<% end %>
+<p>Lines will be available shortly...</p>

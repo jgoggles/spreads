@@ -1,7 +1,14 @@
 class Pick < ActiveRecord::Base
+  
+  # Validations
+  validates :spread, :pick_set_id, :game_id, :presence => true
+  validates_inclusion_of :is_home, :in => [true, false]
+  
   belongs_to :user
   belongs_to :game
   belongs_to :pick_set
+  
+  attr_readonly :spread, :game_id, :pick_set_id, :is_home
 
   def team
     game = Game.find(self.game_id)

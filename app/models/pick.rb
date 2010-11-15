@@ -1,8 +1,8 @@
 class Pick < ActiveRecord::Base
   
   # Validations
-#  validates :spread, :pick_set_id, :game_id, :presence => true
-#  validates_inclusion_of :is_home, :in => [true, false]
+  validates :spread, :game_id, :presence => true
+  validates_inclusion_of :is_home, :in => [true, false]
   
   belongs_to :user
   belongs_to :game
@@ -13,9 +13,9 @@ class Pick < ActiveRecord::Base
   def team
     game = Game.find(self.game_id)
     if self.is_home? 
-      team_name = game.home
+      game.home
     else
-      team_name = game.away
+      game.away
     end
   end
 

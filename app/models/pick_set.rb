@@ -3,6 +3,8 @@ class PickSet < ActiveRecord::Base
   belongs_to :user
   belongs_to :week
 
+  # the :reject_if prevents every pick from being saved since only selected picks will have those attributes inside of a hidden field
+  # seems a little hacky, should look into changing at some point
   accepts_nested_attributes_for :picks, :reject_if => lambda { |a| a[:is_home].blank? || a[:spread].blank? }
 
   validate :number_of_picks

@@ -8,13 +8,13 @@ class PickTest < ActiveSupport::TestCase
     pick = Pick.new
     assert pick.invalid?
     assert pick.errors[:spread].any?
-    assert pick.errors[:pick_set_id].any?
     assert pick.errors[:game_id].any?
     assert pick.errors[:is_home].any?
   end
   
   test "change_pick" do
-    pick = Pick.create!(:spread => "-8.5", :pick_set_id => 1, :game_id => games(:one).id, :is_home => true)
+    game = Game.create!(:date => Time.now + 1.day, :home => "Home", :away => "Away", :week_id => "9999")
+    pick = Pick.create!(:spread => "-8.5", :pick_set_id => 1, :game_id => game.id, :is_home => true)
     
     assert_no_difference 'pick.game_id' do
       pick.update_attributes(:game_id => games(:two).id)
@@ -36,6 +36,11 @@ class PickTest < ActiveSupport::TestCase
       pick.reload
     end
     
+  end
+
+  test "pick_time_before_game_time" do 
+    pick = Pick.new(:spread => "-8.5", :pick_set_id => 1, :game_id => games(:one).id, :is_home => true)
+    assert pick.invalid?
   end
   
 end

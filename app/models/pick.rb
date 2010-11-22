@@ -10,7 +10,7 @@ class Pick < ActiveRecord::Base
   
   attr_readonly :spread, :game_id, :pick_set_id, :is_home
 
-  validate :pick_time
+#  validate :pick_time
 
 #  def pick_time
 #    unless self.game_id.nil?

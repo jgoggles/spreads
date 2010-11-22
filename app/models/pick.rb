@@ -12,11 +12,11 @@ class Pick < ActiveRecord::Base
 
   validate :pick_time
 
-  def pick_time
-    unless self.game_id.nil?
-      errors.add(:base, "Game has already started. Please pick a different game.") if Time.now > Game.find(self.game_id).date
-    end
-  end
+#  def pick_time
+#    unless self.game_id.nil?
+#      errors.add(:base, "Game has already started. Please pick a different game.") if Time.now > Game.find(self.game_id).date
+#    end
+#  end
 
   def team
     game = Game.find(self.game_id)

@@ -10,7 +10,7 @@ class PickSet < ActiveRecord::Base
   validate :number_of_picks
 
   def number_of_picks
-    errors.add_to_base "You cannot have more than 3 picks in a week" if self.picks.size > 3
+    errors.add(:base, "You cannot have more than 3 picks in a week") if self.picks.size > 3
   end
 
   def check_for_non_picks

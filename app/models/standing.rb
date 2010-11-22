@@ -20,22 +20,10 @@ class Standing < ActiveRecord::Base
       end
       points = wins - losses
       if !Standing.where("user_id = #{ps.user_id}").where("week_id = #{ps.week_id}").exists?
-        Standing.create!(:user_id => ps.user_id, 
-                         :week_id => ps.week_id, 
-                         :wins => wins, 
-                         :losses => losses, 
-                         :pushes => pushes, 
-                         :points => points
-                        )
+        Standing.create!(:user_id => ps.user_id, :week_id => ps.week_id, :wins => wins, :losses => losses, :pushes => pushes, :points => points)
       else
         standing = Standing.where("user_id = #{ps.user_id}").where("week_id = #{ps.week_id}").first
-        standing.update_attributes(:user_id => ps.user_id, 
-                                   :week_id => ps.week_id, 
-                                   :wins => wins, 
-                                   :losses => losses, 
-                                   :pushes => pushes, 
-                                   :points => points
-                                  )
+        standing.update_attributes(:user_id => ps.user_id, :week_id => ps.week_id, :wins => wins, :losses => losses, :pushes => pushes, :points => points)
         puts "standing exists"
       end
     end

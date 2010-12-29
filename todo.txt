@@ -1,0 +1,7 @@
+create game entry interface, include week #
+change score url for nfl to POST[week#] format
+change anything dealing with 3 game req
+create leagues
+create league types/rules instead of global variables
+add username
+

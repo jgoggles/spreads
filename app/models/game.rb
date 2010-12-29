@@ -4,7 +4,7 @@ require 'hpricot'
 require 'nokogiri'
 
 class Game < ActiveRecord::Base
-  attr_accessor :spread
+  attr_accessor :spread, :over_under
   has_many :picks
   belongs_to :week
 
@@ -20,7 +20,7 @@ class Game < ActiveRecord::Base
       games.each do |game|
         lines.each do |line|
           if game.away =~ /#{line['game']['away']}/ && game.home =~ /#{line['game']['home']}/
-            game.update_attributes(:spread => line['game']['line'])
+            game.update_attributes(:spread => line['game']['line'], :over_under => line['game']['over_under'])
           end
         end
       end
@@ -39,7 +39,7 @@ class Game < ActiveRecord::Base
       end
       return games
     rescue
-       return false
+      return false
     end
   end
   
@@ -104,11 +104,13 @@ class Game < ActiveRecord::Base
             home.gsub!(/\sJets|\sGiants/, "")
         
             line = a.at_css('div ul[2] li[2] span span.handicap').content
+            over_under = a.at_css('div ul.twoWay[3] li[2] span span.handicap').content
 
             lines.push(Hash.new)
             lines[rows.index(a)]['game'] = {}
             lines[rows.index(a)]['game']['home'] = home
             lines[rows.index(a)]['game']['away'] = away
+            lines[rows.index(a)]['game']['over_under'] = over_under.strip!.gsub("+", "")
             if line.strip.size == 2 && a.at_css('div ul[2] li[2] span span.price').content.strip.size == 2
               lines[rows.index(a)]['game']['line'] = "n/a"
             elsif a.at_css('div ul[2] li[2] span span.price').content == "Closed"
@@ -177,5 +179,18 @@ class Game < ActiveRecord::Base
 
   def has_scores
    !self.home_score.nil? && !self.away_score.nil? 
+  end
+
+  def self.avg_totals
+    score_total = 0
+    game_total = 0
+    all.each do |g|
+      if g.home_score && g.away_score
+        game_total += 1
+        score_total += g.home_score
+        score_total += g.away_score
+      end
+    end
+    puts score_total.to_f/game_total.to_f
   end
 end

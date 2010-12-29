@@ -5,7 +5,7 @@ require 'rails/all'
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
-
+$MODE = 'reg'
 module Spreads
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

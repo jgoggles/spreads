@@ -8,7 +8,7 @@ class Pick < ActiveRecord::Base
   belongs_to :game
   belongs_to :pick_set
   
-  attr_readonly :spread, :game_id, :pick_set_id, :is_home
+  attr_readonly :spread, :over_under, :game_id, :pick_set_id, :is_home
 
 #  validate :pick_time
 

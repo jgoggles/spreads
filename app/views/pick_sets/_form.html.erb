@@ -37,6 +37,9 @@
               <span class="team home"><%= game.home %></span>
               <span class="spread"><%= game.spread.to_f > 0 ? '+' : '' %><%= game.spread.to_f %></span>
             </div>
+            <div>
+              <%= game.over_under %>
+            </div>
             <%= p.hidden_field :is_home, :class => 'set_team' %>
             <%= p.hidden_field :spread, :class => 'set_spread' %>
             <%= p.hidden_field :game_id, :value => game.id %>

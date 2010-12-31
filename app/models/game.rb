@@ -8,6 +8,8 @@ class Game < ActiveRecord::Base
   has_many :picks
   belongs_to :week
 
+  validates_presence_of :week_id, :home, :away
+
   def self.with_spreads(user=nil, test=false)
     if test
       lines = get_lines
@@ -137,8 +139,11 @@ class Game < ActiveRecord::Base
   end
 
   def self.get_scores(week)
-    @url = "http://www.nfl.com/scores/2010/REG#{week.name}"
-#    @url = "http://www.nfl.com/scores/2010/PRE4"
+    if week.name.to_i <= 17
+      @url = "http://www.nfl.com/scores/2010/REG#{week.name}"
+    elsif week.name.to_i > 17
+      @url = "http://www.nfl.com/scores/2010/POST#{week.name}"
+    end
     @response = ''
 
     begin

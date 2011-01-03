@@ -1,4 +1,6 @@
 Spreads::Application.routes.draw do
+  resources :leagues
+
   get "test/lines"
 
   resources :games

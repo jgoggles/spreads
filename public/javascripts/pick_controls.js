@@ -1,5 +1,6 @@
 document.observe("dom:loaded", function() {
   var checkBoxes = $$('input.pick');
+  var overUnderCheckBoxes = $$('input.over_under_pick');
 
   checkBoxes.each(function(s){
     Event.observe(s, 'click', function(event) {
@@ -19,6 +20,29 @@ document.observe("dom:loaded", function() {
 
         if ($(this).up().adjacent('div.teamLine')[0].down('input.pick').checked=true) {
           $(this).up().adjacent('div.teamLine')[0].down('input.pick').checked=false;
+        }
+      }
+    });
+  });
+
+  overUnderCheckBoxes.each(function(s){
+    Event.observe(s, 'click', function(event) {
+      if ($(this).next('span').hasClassName('under')) {
+        var over = 0;
+      }else{
+        var over = 1;
+      }
+      var over_under = $(this).previous('span.over_under').innerHTML;
+      
+      if (!$(this).checked && !$(this).adjacent('input.over_under_pick')[0].checked) {
+        $(this).up().next('input.set_is_over').setValue('');
+        $(this).up().next('input.set_over_under').setValue('');
+      }else{
+        $(this).up().next('input.set_is_over').setValue(over);
+        $(this).up().next('input.set_over_under').setValue(over_under);
+
+        if ($(this).adjacent('input.over_under_pick')[0].checked=true) {
+          $(this).adjacent('input.over_under_pick')[0].checked=false;
         }
       }
     });

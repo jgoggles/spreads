@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101231171239) do
+ActiveRecord::Schema.define(:version => 20110103215429) do
 
   create_table "games", :force => true do |t|
     t.datetime "date"
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(:version => 20101231171239) do
     t.integer  "game_id"
     t.integer  "pick_set_id"
     t.boolean  "is_home"
+    t.float    "over_under"
+    t.boolean  "is_over"
   end
 
   create_table "standings", :force => true do |t|

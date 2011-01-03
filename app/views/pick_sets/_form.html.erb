@@ -37,11 +37,17 @@
               <span class="team home"><%= game.home %></span>
               <span class="spread"><%= game.spread.to_f > 0 ? '+' : '' %><%= game.spread.to_f %></span>
             </div>
-            <div>
-              <%= game.over_under %>
+            <div class="over_under_container">
+              Over/Under: <span class="over_under"><%= game.over_under %></span><br />
+              <%= check_box_tag("pick_ou_#{game.id}_0", '1', false, :class => 'over_under_pick') %>
+              <span class="over">Over</span><br />
+              <%= check_box_tag("pick_ou_#{game.id}_1", '1', false, :class => 'over_under_pick') %>
+              <span class="under">Under</span>
             </div>
             <%= p.hidden_field :is_home, :class => 'set_team' %>
             <%= p.hidden_field :spread, :class => 'set_spread' %>
+            <%= p.hidden_field :is_over, :class => 'set_is_over' %>
+            <%= p.hidden_field :over_under, :class => 'set_over_under' %>
             <%= p.hidden_field :game_id, :value => game.id %>
           <% end %>
         <% else %>

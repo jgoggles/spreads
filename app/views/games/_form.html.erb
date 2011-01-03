@@ -12,8 +12,14 @@
   <% end %>
 
   <p>
-  <%= f.label :week_id %><br />
+    <%= f.label :week_id %><br />
     <%= f.text_field :week_id %>
+  </p>
+
+  <p>
+    <%= f.label :date %>
+    (add 8 hours to MST game time)<br />
+    <%= f.datetime_select :date %>
   </p>
 
   <p>

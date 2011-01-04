@@ -42,7 +42,7 @@ class Standing < ActiveRecord::Base
     end
   end
 
-  def self.for_season(users, start_week_id=1, end_week_id=18)
+  def self.for_season(users, start_week_id=0, end_week_id=18)
     season_standings = []
     users.each do |u|
       record = {}  

@@ -32,7 +32,7 @@ p {margin-bottom: 10px;}
 #weeksPicks li {width: 580px;}
 #weeksPicks li.pick {border-top: 1px solid #E2E2E2; font-size: 18px; font-weight: 200; margin: 2px 0; padding: 5px 3px;}
 
-/* #gameList {background: url('/images/chewy.jpg') top right no-repeat;} */
+#gameList {background: url('/images/chewy.jpg') top right no-repeat;}
 #gameList li {padding: 6px; width: 580px;}
 #gameList li .teamLine {padding: 3px;}
 #gameList li .gameOff {color: #c00; float: right;}

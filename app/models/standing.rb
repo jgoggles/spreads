@@ -42,13 +42,13 @@ class Standing < ActiveRecord::Base
     end
   end
 
-  def self.for_season(users)
+  def self.for_season(users, start_week_id=1, end_week_id=18)
     season_standings = []
     users.each do |u|
       record = {}  
       record['player'] = u
       wins, losses, pushes, points, ou_points = 0, 0, 0, 0, 0
-      u.standings.each do |s|
+      u.standings.where("week_id > #{start_week_id}").where("week_id < #{end_week_id}").each do |s|
         wins += s.wins
         losses += s.losses
         pushes += s.pushes

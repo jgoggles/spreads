@@ -12,6 +12,7 @@
       </li>
     <% end %>
     <% end %>
+    <%= link_to 'Add/Modify picks', edit_pick_set_path(@current_pick_set) %>
     <% @current_pick_set.picks.each do |pick| %>
       <li class="pick">
         <%= pick.team %>
@@ -25,13 +26,11 @@
         <% end%>
         )
         <% if pick.spread.nil? %>
-          <span style="color: red">NO PICK YET</span>
-          <%= link_to 'Modify pick', edit_pick_set_path(@current_pick_set) %>
+          <span style="color: red">NO SPREAD PICK YET</span>
         <% end %> 
         <br />
         <% if pick.over_under.nil? %>
           <span style="color: red">NO OVER/UNDER PICK YET</span>
-          <%= link_to 'Modify pick', edit_pick_set_path(@current_pick_set) %>
         <% else %>
           <%= pick.over_under %> <%= pick.is_over? ? "Over" : "Under" %>
         <% end %>

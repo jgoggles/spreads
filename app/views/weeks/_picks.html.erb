@@ -14,6 +14,7 @@
   <li><strong>Home/Away:</strong> <%= "#{@week.home_vs_away[0]}/#{@week.home_vs_away[1]}" %></li>
   <li><strong>Favorites/Underdogs:</strong> <%= "#{@week.favorite_vs_underdog[0]}/#{@week.favorite_vs_underdog[1]}" %></li>
 
+  <% comment do %>
   <li><strong>Most action:</strong>
     <ul>
       <% @week.most_action.each do |g| %>
@@ -21,6 +22,7 @@
       <% end %>
     </ul>
   </li>
+  <% end %>
 </ul>
   
 <ul id="seasonStandingsHeager" class="standing standingsHeader">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110103215429) do
+ActiveRecord::Schema.define(:version => 20110104205432) do
 
   create_table "games", :force => true do |t|
     t.datetime "date"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20110103215429) do
     t.boolean  "is_home"
     t.float    "over_under"
     t.boolean  "is_over"
+    t.integer  "over_under_result"
   end
 
   create_table "standings", :force => true do |t|
@@ -52,6 +53,7 @@ ActiveRecord::Schema.define(:version => 20110103215429) do
     t.integer  "points"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "over_under_points"
   end
 
   create_table "users", :force => true do |t|

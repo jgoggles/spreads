@@ -4,11 +4,13 @@ class Pick < ActiveRecord::Base
 #  validates :spread, :game_id, :presence => true
 #  validates_inclusion_of :is_home, :in => [true, false]
   
+  before_create :update_existing_picks
+  
   belongs_to :user
   belongs_to :game
   belongs_to :pick_set
   
-  attr_readonly :spread, :over_under, :game_id, :pick_set_id, :is_home
+#  attr_readonly :spread, :over_under, :game_id, :pick_set_id, :is_home
 
 #  validate :pick_time
 
@@ -17,6 +19,20 @@ class Pick < ActiveRecord::Base
 #      errors.add(:base, "Game has already started. Please pick a different game.") if Time.now > Game.find(self.game_id).date
 #    end
 #  end
+
+  def update_existing_picks
+    picks = PickSet.where("week_id = #{Week.current.first.id}").collect(&:picks)
+    picks[0].each do |p|
+      if p.game_id == self.game_id && p.pick_set_id == self.pick_set_id
+        if self.over_under.nil? 
+          self.attributes = {:over_under => p.over_under, :is_over => p.is_over}
+        else
+          self.attributes = {:spread => p.spread, :is_home => p.is_home}
+        end
+        Pick.delete(p.id)
+      end
+    end
+  end
 
   def team
     game = Game.find(self.game_id)
@@ -49,5 +65,27 @@ class Pick < ActiveRecord::Base
       result = 0
     end
     self.update_attributes(:result => result)
+  end
+
+  def generate_over_under_result 
+    unless self.game_id == 0
+      game = Game.find(self.game_id)
+      if game.has_scores && Time.now > game.date
+        over = self.over_under < game.home_score + game.away_score
+        even = self.over_under == game.home_score + game.away_score
+        if self.is_over? && over || !self.is_over? && !over
+          result = 1
+        elsif even
+          result = 0
+        else
+          result = -1
+        end
+        self.update_attributes(:over_under_result => result)
+      end
+    end
+  end
+
+  def complete
+    !self.spread.nil? && !self.over_under.nil?
   end
 end

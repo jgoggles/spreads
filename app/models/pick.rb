@@ -1,8 +1,8 @@
 class Pick < ActiveRecord::Base
   
   # Validations
-  validates :spread, :game_id, :presence => true
-  validates_inclusion_of :is_home, :in => [true, false]
+#  validates :spread, :game_id, :presence => true
+#  validates_inclusion_of :is_home, :in => [true, false]
   
   belongs_to :user
   belongs_to :game

@@ -33,7 +33,13 @@ class Game < ActiveRecord::Base
           picks.each do |p|
             games.each do |g|
               if g.id == p.game_id
-                g.update_attributes(:spread => "n/a")
+                if p.spread && p.over_under
+                  g.update_attributes(:spread => "n/a")
+                elsif p.over_under
+                  g.update_attributes(:over_under => "n/a")
+                elsif p.spread
+                  g.update_attributes(:spread => "pick")
+                end
               end
             end
           end

@@ -2,6 +2,7 @@
 
 <% if @current_pick_set %>
   <ul id="weeksPicks">
+    <% comment do %>
 		<% if @current_pick_set.picks.size < 3 %>
       <li class="pickAlert">
       <% @picks_left = 3 - @current_pick_set.picks.size;
@@ -10,16 +11,30 @@
         <%= link_to 'Add picks', edit_pick_set_path(@current_pick_set) %>
       </li>
     <% end %>
+    <% end %>
     <% @current_pick_set.picks.each do |pick| %>
       <li class="pick">
         <%= pick.team %>
-				<%= pick.spread > 0 ? "+" : '' %><%= pick.spread %>
-				(<% if pick.is_home %>
-					vs <%= Game.find(pick.game_id).away %>
-				<% else %>
-					at <%= Game.find(pick.game_id).home %>
-				<% end%>
-				)
+        <% unless pick.spread.nil? %>
+          <%= pick.spread > 0 ? "+" : '' %><%= pick.spread %>
+        <% end %>
+        (<% if pick.is_home %>
+          vs <%= Game.find(pick.game_id).away %>
+        <% else %>
+          at <%= Game.find(pick.game_id).home %>
+        <% end%>
+        )
+        <% if pick.spread.nil? %>
+          <span style="color: red">NO PICK YET</span>
+          <%= link_to 'Modify pick', edit_pick_set_path(@current_pick_set) %>
+        <% end %> 
+        <br />
+        <% if pick.over_under.nil? %>
+          <span style="color: red">NO OVER/UNDER PICK YET</span>
+          <%= link_to 'Modify pick', edit_pick_set_path(@current_pick_set) %>
+        <% else %>
+          <%= pick.over_under %> <%= pick.is_over? ? "Over" : "Under" %>
+        <% end %>
       </li>  
     <% end %>
   </ul>

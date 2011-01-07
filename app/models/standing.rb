@@ -42,26 +42,26 @@ class Standing < ActiveRecord::Base
     end
   end
 
-  def self.for_season(users, start_week_id=0, end_week_id=18)
+  def self.for_season(users, start_week_id=1, end_week_id=17)
     season_standings = []
     users.each do |u|
       record = {}  
       record['player'] = u
-      wins, losses, pushes, points, ou_points = 0, 0, 0, 0, 0
-      u.standings.where("week_id > #{start_week_id}").where("week_id < #{end_week_id}").each do |s|
+      wins, losses, pushes, points, over_under_points = 0, 0, 0, 0, 0
+      u.standings.where("week_id >= #{start_week_id}").where("week_id <= #{end_week_id}").each do |s|
         wins += s.wins
         losses += s.losses
         pushes += s.pushes
         points += s.points 
         unless s.over_under_points.nil?
-          ou_points += s.over_under_points
+          over_under_points += s.over_under_points
         end
       end
       record['wins'] = wins
       record['losses'] = losses
       record['pushes'] = pushes
       record['points'] = points
-      record['ou_points'] = ou_points
+      record['over_under_points'] = over_under_points
       
       if Week.current.first.id > 1
         last_week = u.standings.where("week_id = #{Week.previous.id}")

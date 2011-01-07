@@ -43,8 +43,10 @@ p {margin-bottom: 10px;}
 .standingRow li, .standingsHeader li {float: left; margin: 0px 4px;}
 .standing .player {width: 33%;}
 .standingsContainer .user {background: #D3FFDC;}
-.standing .record {width: 25%; text-align: center;}
+.standing .record {width: 15%; text-align: center;}
 .standing .points {width: 10%; text-align: right;}
+.standing .o_u {font-size: 14px; text-align: right; width: 15%;}
+.standing .o_u h2 {font-size: 14px; margin-top:4px;}
 .standing .pick, .standing .result {font-size: 12px; font-weight: 400; margin: -3px 0px; padding: 0px; width: 25%;}
 .standingRow .week {background: #F1F1F1; width: 100%;}
 .standing .pick {margin-left: 275px;}

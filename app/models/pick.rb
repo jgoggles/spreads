@@ -21,15 +21,18 @@ class Pick < ActiveRecord::Base
 #  end
 
   def update_existing_picks
-    picks = PickSet.where("week_id = #{Week.current.first.id}").collect(&:picks)
-    picks[0].each do |p|
-      if p.game_id == self.game_id && p.pick_set_id == self.pick_set_id
-        if self.over_under.nil? 
-          self.attributes = {:over_under => p.over_under, :is_over => p.is_over}
-        else
-          self.attributes = {:spread => p.spread, :is_home => p.is_home}
+    pick_sets = PickSet.where("week_id = #{Week.current.first.id}").collect(&:picks)
+    pick_sets.each do |ps|
+      ps.each do |p|
+        if p.game_id == self.game_id && p.pick_set_id == self.pick_set_id
+          logger.info "*******************************"
+          if self.over_under.nil? 
+            self.attributes = {:over_under => p.over_under, :is_over => p.is_over}
+          else
+            self.attributes = {:spread => p.spread, :is_home => p.is_home}
+          end
+          Pick.delete(p.id)
         end
-        Pick.delete(p.id)
       end
     end
   end

@@ -65,10 +65,11 @@
           </li>
         </ul>
 	    <% ps.picks.each do |p| %>
+        <% unless p.spread.nil? %>
           <ul class="standing standingRow">
             <li class="pick">
-              <% if p.game_id == 0 %>
-                Non-pick
+              <% if p.game_id == 0 || p.spread == 0 && p.is_home.nil? %>
+                Non-pick (Spread)
               <% else %>
                 <% game = Game.find(p.game_id) %>
                 <%= p.team %>
@@ -79,8 +80,6 @@
                   at <%= game.home %>
                 <% end%>
                 ) <br />
-                <%= p.over_under %>
-                <%= p.is_over? ? "Over" : "Under" unless p.is_over.nil? %>
               <% end %>
             </li>
             <% if p.result == 1 %>
@@ -88,6 +87,24 @@
             <% elsif p.result == -1 %>
               <li class="result loss">Loss</li>
             <% elsif p.result == 0 %>
+              <li class="result push">Push</li>
+            <% end %> 
+          </ul>
+        <% end %>
+          <ul class="standing standingRow" style="border-bottom: #ccc 1px dashed">
+            <li class="pick">
+              <% if p.game_id == 0 || p.over_under == 0 && p.is_over.nil? %>
+                Non-pick (O/U)
+              <% else %>
+                <%= p.over_under %>
+                <%= p.is_over? ? "Over" : "Under" unless p.is_over.nil? %>
+              <% end %>
+            </li>
+            <% if p.over_under_result == 1 %>
+              <li class="result win">Win</li>
+            <% elsif p.over_under_result == -1 %>
+              <li class="result loss">Loss</li>
+            <% elsif p.over_under_result == 0 %>
               <li class="result push">Push</li>
             <% end %> 
           </ul>

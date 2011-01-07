@@ -44,7 +44,7 @@
     <% ps.picks.each do |p| %>
       <ul class="standing standingRow">
         <li class="pick">
-          <% if p.game_id == 0 %>
+          <% if p.game_id == 0 || p.spread == 0 && p.is_home.nil? %>
               Non-pick
           <% else %>
               <%= p.team %>
@@ -62,6 +62,23 @@
         <% elsif p.result == -1 %>
           <li class="result loss">Loss</li>
         <% elsif p.result == 0 %>
+          <li class="result push">Push</li>
+        <% end %> 
+      </ul>
+      <ul class="standing standingRow" style="border-bottom: #ccc 1px dashed">
+        <li class="pick">
+          <% if p.game_id == 0 || p.over_under == 0 && p.is_over.nil? %>
+            Non-pick (O/U)
+          <% else %>
+            <%= p.over_under %>
+            <%= p.is_over? ? "Over" : "Under" unless p.is_over.nil? %>
+          <% end %>
+        </li>
+        <% if p.over_under_result == 1 %>
+          <li class="result win">Win</li>
+        <% elsif p.over_under_result == -1 %>
+          <li class="result loss">Loss</li>
+        <% elsif p.over_under_result == 0 %>
           <li class="result push">Push</li>
         <% end %> 
       </ul>

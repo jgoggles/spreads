@@ -14,14 +14,23 @@ class PickSet < ActiveRecord::Base
   end
 
   def check_for_non_picks
-#    if Week.find(self.week_id).end_date < Week.current.first.start_date
+    if Week.find(self.week_id).end_date < Week.current.first.start_date
       games = Game.find_all_by_week_id(self.week_id).size
 #      if self.picks.size < 3
       if self.picks.size < games
         losses = games - self.picks.size
         losses.times {Pick.create!(:spread => 0, :result => -1, :game_id => 0, :pick_set_id => self.id, :over_under => 0, :over_under_result => -1)}
       end
-#    end
+      self.picks.each do |p|
+        unless p.complete
+          if p.spread.nil?
+            p.update_attributes(:spread => 0, :result => -1)
+          else
+            p.update_attributes(:over_under => 0, :over_under_result => -1)
+          end
+        end
+      end
+    end
   end
 
   def self.all_picks_in(week=Week.current.first)

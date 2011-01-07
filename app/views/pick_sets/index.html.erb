@@ -3,16 +3,19 @@
 <% if @current_pick_set %>
   <ul id="weeksPicks">
     <% comment do %>
-		<% if @current_pick_set.picks.size < 3 %>
-      <li class="pickAlert">
-      <% @picks_left = 3 - @current_pick_set.picks.size;
-         @pick_or_picks = @picks_left > 1 ? 'picks' : 'pick' %>
-         <h2><%= "You need to make #{@picks_left} more #{@pick_or_picks} for this week." %></h2>
-        <%= link_to 'Add picks', edit_pick_set_path(@current_pick_set) %>
-      </li>
+      <% if @current_pick_set.picks.size < 3 %>
+        <li class="pickAlert">
+        <% @picks_left = 3 - @current_pick_set.picks.size;
+           @pick_or_picks = @picks_left > 1 ? 'picks' : 'pick' %>
+           <h2><%= "You need to make #{@picks_left} more #{@pick_or_picks} for this week." %></h2>
+          <%= link_to 'Add picks', edit_pick_set_path(@current_pick_set) %>
+        </li>
+      <% end %>
     <% end %>
+
+    <% if @current_pick_set.picks.collect(&:complete).delete_if {|x| !x}.size < @total_games %>
+      <%= link_to 'Add/Modify picks', edit_pick_set_path(@current_pick_set) %>
     <% end %>
-    <%= link_to 'Add/Modify picks', edit_pick_set_path(@current_pick_set) %>
     <% @current_pick_set.picks.each do |pick| %>
       <li class="pick">
         <%= pick.team %>

@@ -8,7 +8,7 @@ class PickSetsController < ApplicationController
     # @league_pick_sets = User.where("id != #{current_user.id}") 
     @week = Week.current.first
     @title = "Week #{@week.name} picks"
-    @total_games = Game.find_all_by_week_id(18).size
+    @total_games = Game.find_all_by_week_id(@week.id).size
 
     respond_to do |format|
       format.html # index.html.erb

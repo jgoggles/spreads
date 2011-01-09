@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
 
+  scope :active, :conditions => {:active => true}
+
   def has_picks_for_this_week
     week = Week.current.first
     week_pick_set = self.pick_sets.where("week_id = #{week.id}")

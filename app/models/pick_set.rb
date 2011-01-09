@@ -42,7 +42,7 @@ class PickSet < ActiveRecord::Base
         pick_total += 1 if p.complete
       end
     end
-    if pick_total == User.active.size * games 
+    if pick_total >= User.active.size * games 
       return true
     else
       return false

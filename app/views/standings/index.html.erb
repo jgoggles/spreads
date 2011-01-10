@@ -69,7 +69,7 @@
           <ul class="standing standingRow">
             <li class="pick">
               <% if p.game_id == 0 || p.spread == 0 && p.is_home.nil? %>
-                Non-pick (Spread)
+                No pick (Spread)
               <% else %>
                 <% game = Game.find(p.game_id) %>
                 <%= p.team %>
@@ -95,7 +95,7 @@
           <ul class="standing standingRow" style="border-bottom: #ccc 1px dashed">
             <li class="pick">
               <% if p.game_id == 0 || p.over_under == 0 && p.is_over.nil? %>
-                Non-pick (O/U)
+                No pick (O/U)
               <% else %>
                 <%= p.over_under %>
                 <%= p.is_over? ? "Over" : "Under" unless p.is_over.nil? %>

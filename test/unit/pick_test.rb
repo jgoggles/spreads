@@ -53,7 +53,6 @@ class PickTest < ActiveSupport::TestCase
     assert_raises(ActiveRecord::RecordNotFound) do
       picks(:pick_one).reload
     end
-
   end
   
   test "clone and delete duplicate pick 2" do
@@ -65,6 +64,9 @@ class PickTest < ActiveSupport::TestCase
     assert_raises(ActiveRecord::RecordNotFound) do
       picks(:pick_two).reload
     end
+  end
 
+  test "team picked" do
+    assert picks(:pick_one).team == games(:game_one).home
   end
 end

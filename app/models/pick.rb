@@ -24,29 +24,21 @@ class Pick < ActiveRecord::Base
 # the existing record to the new record then deletes the existing record. basially it's a piecemeal update_attributes and is
 # needed because the pick_set form only builds new records since its creating form elements from scraped data 
   def clone_and_delete_duplicate_pick
-    pick_sets = PickSet.where("week_id = #{Week.current.first.id}").collect(&:picks)
-    pick_sets.each do |ps|
-      ps.each do |p|
-        if p.game_id == self.game_id && p.pick_set_id == self.pick_set_id
-          logger.info "*******************************"
-          if self.over_under.nil? 
-            self.attributes = {:over_under => p.over_under, :is_over => p.is_over}
-          else
-            self.attributes = {:spread => p.spread, :is_home => p.is_home}
-          end
-          Pick.delete(p.id)
+    Pick.joins(:pick_set).where("week_id = #{Week.current.first.id}").each do |p|
+      if p.game_id == self.game_id && p.pick_set_id == self.pick_set_id
+        if self.over_under.nil? 
+          self.attributes = {:over_under => p.over_under, :is_over => p.is_over}
+        elsif self.spread.nil?
+          self.attributes = {:spread => p.spread, :is_home => p.is_home}
         end
+        Pick.delete(p.id)
       end
     end
   end
 
   def team
     game = Game.find(self.game_id)
-    if self.is_home? 
-      game.home
-    else
-      game.away
-    end
+    self.is_home? ? game.home : game.away
   end
 
   def generate_result 

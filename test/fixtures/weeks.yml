@@ -1,10 +1,10 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-#one:
-#  name: MyString
-#  start_date: 2010-09-08 10:35:02
-#  end_date: 2010-09-08 10:35:02
-#
+current_week:
+  name: "current week"
+  start_date: <%= Date.today %>
+  end_date: <%= Date.today + 7.days %>
+
 #two:
 #  name: MyString
 #  start_date: 2010-09-08 10:35:02

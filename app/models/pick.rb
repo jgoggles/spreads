@@ -4,8 +4,8 @@ class Pick < ActiveRecord::Base
 #  validates :spread, :game_id, :presence => true
 #  validates_inclusion_of :is_home, :in => [true, false]
   
-  before_create :update_existing_picks
-  
+  before_create :clone_and_delete_duplicate_pick  
+
   belongs_to :user
   belongs_to :game
   belongs_to :pick_set
@@ -20,7 +20,10 @@ class Pick < ActiveRecord::Base
 #    end
 #  end
 
-  def update_existing_picks
+# this checks for picks with the same pick_set_id and game_id. if one is found it clones the appropriate attributes from 
+# the existing record to the new record then deletes the existing record. basially it's a piecemeal update_attributes and is
+# needed because the pick_set form only builds new records since its creating form elements from scraped data 
+  def clone_and_delete_duplicate_pick
     pick_sets = PickSet.where("week_id = #{Week.current.first.id}").collect(&:picks)
     pick_sets.each do |ps|
       ps.each do |p|

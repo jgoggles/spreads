@@ -1,9 +1,9 @@
 ## Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 #
-#one:
-#  user_id: 1
-#  week_id: 1
-#
-#two:
-#  user_id: 2
-#  week_id: 1
+pick_set_one:
+  user_id: 1
+  week: current_week
+
+pick_set_two:
+  user_id: 2
+  week: current_week

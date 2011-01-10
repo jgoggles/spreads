@@ -5,15 +5,15 @@
 # below each fixture, per the syntax in the comments below
 #
 
-one:
+pick_one:
   spread: "-6.5"
-  game_id: 1
-  pick_set_id: 1
+  game: game_one
+  pick_set: pick_set_one
   is_home: true
   
-two:
-  spread: "3"
-  game_id: 2
-  pick_set_id: 1
-  is_home: false
+pick_two:
+  over_under: "44.5"
+  game: game_two
+  pick_set: pick_set_one
+  is_over: true
   

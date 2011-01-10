@@ -1,15 +1,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  id: 1
+game_one:
   date: "2010-09-03 23:00:00"
   home: "Detroit"
   away: "Buffalo"
-  week_id: 18
+  week: current_week
+  home_score: 20
+  away_score: 30
   
-two:
-  id: 2
+game_two:
   date: "2010-09-03 23:00:00"
   home: "Indianapolis"
   away: "Cincinnati"
-  week_id: 18
+  week: current_week
+  home_score: 0
+  away_score: 35

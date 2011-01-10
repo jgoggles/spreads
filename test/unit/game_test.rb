@@ -1,8 +1,11 @@
 require 'test_helper'
 
 class GameTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  fixtures :games
+
+  test "game has scores" do
+    game = games(:one)
+    assert game.has_scores
   end
+
 end

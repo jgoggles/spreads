@@ -71,9 +71,9 @@ class Pick < ActiveRecord::Base
   end
 
   def generate_over_under_result 
-    unless self.game_id == 0
+    unless self.game_id == 0 || self.over_under.nil?
       game = Game.find(self.game_id)
-      if game.has_scores && Time.now > game.date
+      if game.has_scores && Time.now > game.date 
         over = self.over_under < game.home_score + game.away_score
         even = self.over_under == game.home_score + game.away_score
         if self.is_over? && over || !self.is_over? && !over

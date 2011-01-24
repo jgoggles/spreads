@@ -18,6 +18,8 @@
 
     <ul id="gameList" style="list-style: none">
       <% @games.each do |game| %>
+        <% game.spread = "-3.0" if game.id = 272 %>
+        <% game.over_under = "46.0" if game.id = 272 %>
         <li id="<%= game.id %>" class="<%= cycle('shade', ' ') %>">
         <% if game.spread != "n/a" && game.date > Time.now - 1.hour %>
           <%= f.fields_for(:picks, Pick.new) do |p| %>

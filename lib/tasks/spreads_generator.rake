@@ -15,11 +15,12 @@ end
 
 desc "Generates results and standings for this week's picks"
 task :generate_standings => :environment do
-  if Time.now.day == Week.current.first.start_date.day
+#  this conditional doesnt apply to postseason since there is no MNF. Weeks end on Sun, crons running Mon and Tues mornings always needs to generate prev week's standings. 
+#  if Time.now.day == Week.current.first.start_date.day
     week = Week.previous
-  else
-    week = Week.current.first
-  end
+#  else
+#    week = Week.current.first
+#  end
 
   week_id = ENV['WEEK_ID'] || week.id
   
